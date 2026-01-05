@@ -142,23 +142,23 @@ class 🖒 extends AbstractHelper
     {
         // Get defaults from site settings first, then global settings.
         if ($this->siteSettings) {
-            $showCount🖒 = $this->siteSettings->get('🖒_show_count_🖒', true);
-            $showCount🖓 = $this->siteSettings->get('🖒_show_count_🖓', false);
+            $showCount🖒 = $this->siteSettings->get('🖒_show_count_like', true);
+            $showCount🖓 = $this->siteSettings->get('🖒_show_count_dislike', false);
             $iconType = $this->siteSettings->get('🖒_icon_type', 'unicode');
-            $allow🖓 = $this->siteSettings->get('🖒_allow_🖓', false);
+            $allow🖓 = $this->siteSettings->get('🖒_allow_dislike', false);
             $defaults = [
-                'showCount🖒' => (bool) ($showCount🖒 === '' ? $this->settings->get('🖒_show_count_🖒', true) : $showCount🖒),
-                'showCount🖓' => (bool) ($showCount🖓 === '' ? $this->settings->get('🖒_show_count_🖓', true) : $showCount🖓),
+                'showCount🖒' => (bool) ($showCount🖒 === '' ? $this->settings->get('🖒_show_count_like', true) : $showCount🖒),
+                'showCount🖓' => (bool) ($showCount🖓 === '' ? $this->settings->get('🖒_show_count_dislike', true) : $showCount🖓),
                 'iconType' => $iconType === '' ? $this->settings->get('🖒_icon_type', 'unicode') : $iconType,
-                'allow🖓' => (bool) ($allow🖓 === '' ? $this->settings->get('🖒_allow_🖓', true) : $allow🖓),
+                'allow🖓' => (bool) ($allow🖓 === '' ? $this->settings->get('🖒_allow_dislike', true) : $allow🖓),
                 'template' => 'common/🖒',
             ];
         } else {
             $defaults = [
-                'showCount🖒' => (bool) $this->settings->get('🖒_show_count_🖒', true),
-                'showCount🖓' => (bool) $this->settings->get('🖒_show_count_🖓', false),
+                'showCount🖒' => (bool) $this->settings->get('🖒_show_count_like', true),
+                'showCount🖓' => (bool) $this->settings->get('🖒_show_count_dislike', false),
                 'iconType' => $this->settings->get('🖒_icon_type', 'unicode'),
-                'allow🖓' => (bool) $this->settings->get('🖒_allow_🖓', true),
+                'allow🖓' => (bool) $this->settings->get('🖒_allow_dislike', true),
                 'template' => 'common/🖒',
             ];
         }

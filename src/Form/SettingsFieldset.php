@@ -37,36 +37,36 @@ class SettingsFieldset extends Fieldset
                 ],
             ])
             ->add([
-                'name' => '🖒_allow_🖓',
+                'name' => '🖒_allow_dislike',
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => '🖒',
                     'label' => 'Allow 🖓', // @translate
                 ],
                 'attributes' => [
-                    'id' => '🖒_allow_🖓',
+                    'id' => '🖒_allow_dislike',
                 ],
             ])
             ->add([
-                'name' => '🖒_show_count_🖒',
+                'name' => '🖒_show_count_like',
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => '🖒',
                     'label' => 'Show count of 🖒', // @translate
                 ],
                 'attributes' => [
-                    'id' => '🖒_show_count_🖒',
+                    'id' => '🖒_show_count_like',
                 ],
             ])
             ->add([
-                'name' => '🖒_show_count_🖓',
+                'name' => '🖒_show_count_dislike',
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => '🖒',
                     'label' => 'Show count of 🖓', // @translate
                 ],
                 'attributes' => [
-                    'id' => '🖒_show_count_🖓',
+                    'id' => '🖒_show_count_dislike',
                 ],
             ])
             ->add([

@@ -20,7 +20,7 @@ class SiteSettingsFieldset extends Fieldset
             ->setOption('element_groups', $this->elementGroups)
 
             ->add([
-                'name' => '🖒_allow_🖓',
+                'name' => '🖒_allow_dislike',
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
@@ -32,11 +32,11 @@ class SiteSettingsFieldset extends Fieldset
                     ],
                 ],
                 'attributes' => [
-                    'id' => '🖒_allow_🖓',
+                    'id' => '🖒_allow_dislike',
                 ],
             ])
             ->add([
-                'name' => '🖒_show_count_🖒',
+                'name' => '🖒_show_count_like',
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
@@ -48,11 +48,11 @@ class SiteSettingsFieldset extends Fieldset
                     ],
                 ],
                 'attributes' => [
-                    'id' => '🖒_show_count_🖒',
+                    'id' => '🖒_show_count_like',
                 ],
             ])
             ->add([
-                'name' => '🖒_show_count_🖓',
+                'name' => '🖒_show_count_dislike',
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
@@ -64,7 +64,7 @@ class SiteSettingsFieldset extends Fieldset
                     ],
                 ],
                 'attributes' => [
-                    'id' => '🖒_show_count_🖓',
+                    'id' => '🖒_show_count_dislike',
                 ],
             ])
             ->add([

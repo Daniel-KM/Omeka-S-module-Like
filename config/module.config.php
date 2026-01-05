@@ -138,16 +138,17 @@ return [
             '🖒_resources' => [
                 'items',
             ],
-            '🖒_allow_🖓' => true,
-            '🖒_show_count_🖒' => true,
-            '🖒_show_count_🖓' => false,
+            // Warning: mysql does not support to use two emojis in a id: 🖒_show_count_🖒 = 🖒_show_count_🖓.
+            '🖒_allow_dislike' => true,
+            '🖒_show_count_like' => true,
+            '🖒_show_count_dislike' => false,
             '🖒_icon_type' => 'unicode',
             '🖒_allow_public_view' => true,
         ],
         'site_settings' => [
-            '🖒_allow_🖓' => '',
-            '🖒_show_count_🖒' => '',
-            '🖒_show_count_🖓' => '',
+            '🖒_allow_dislike' => '',
+            '🖒_show_count_like' => '',
+            '🖒_show_count_dislike' => '',
             '🖒_icon_type' => '',
         ],
     ],
