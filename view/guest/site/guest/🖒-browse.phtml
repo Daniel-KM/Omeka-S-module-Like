@@ -31,7 +31,7 @@ $this->htmlElement('body')->appendAttribute('class', 'like-browse guest-like-bro
         <p><?= $escape($translate('You have not liked any resources yet.')) ?></p>
     <?php else: ?>
         <p class="like-count-summary">
-            <?= sprintf($translate('You have liked %d resource(s).'), $totalCount) ?>
+            <?= sprintf($translate('You have liked %d resources.'), $totalCount) ?>
         </p>
 
         <div class="likes-list resources">

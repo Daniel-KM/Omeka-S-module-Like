@@ -191,7 +191,7 @@ class LikeAdapter extends AbstractEntityAdapter
             }
         }
 
-        // Filter by ID(s).
+        // Filter by ids.
         if (!empty($query['id'])) {
             $ids = is_array($query['id']) ? $query['id'] : [$query['id']];
             $ids = array_filter(array_map('intval', $ids));

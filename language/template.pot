@@ -1,0 +1,291 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-01-05 00:00+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: data/scripts/upgrade.php:42 Module.php:48 Module.php:56
+#, php-format
+msgid "The module %1$s should be upgraded to version %2$s or later."
+msgstr ""
+
+#: Module.php:555 view/common/advanced-search/🖒.phtml:18
+msgid "Like status"
+msgstr ""
+
+#: Module.php:557 view/common/advanced-search/🖒.phtml:23
+msgid "Liked by me"
+msgstr ""
+
+#: Module.php:558 view/common/advanced-search/🖒.phtml:24
+msgid "Disliked by me"
+msgstr ""
+
+#: Module.php:559 view/common/advanced-search/🖒.phtml:25
+msgid "Voted by me"
+msgstr ""
+
+#: Module.php:560 view/common/advanced-search/🖒.phtml:26
+msgid "Not voted by me"
+msgstr ""
+
+#: Module.php:566 view/common/advanced-search/🖒.phtml:33
+msgid "Has likes"
+msgstr ""
+
+#: Module.php:790 view/🖒/admin/index/browse.phtml:19
+#: view/common/admin/🖒-details.phtml:15
+msgid "Likes"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:51
+msgid "[Deleted resource]"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:58
+msgid "[Deleted user]"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:63
+msgid "Liked"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:65
+msgid "Disliked"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:83
+msgid "No ❤️ found."
+msgstr ""
+
+#: view/common/🖒.phtml:71
+#, php-format
+msgid "You must be logged in to %1$s or %2$s resources."
+msgstr ""
+
+#: view/common/🖒.phtml:74
+#, php-format
+msgid "You must be logged in to %s resources."
+msgstr ""
+
+#: view/common/🖒.phtml:80
+msgid "You cannot change your vote."
+msgstr ""
+
+#: view/common/🖒.phtml:84
+msgid "Like"
+msgstr ""
+
+#: view/common/🖒.phtml:95
+msgid "Dislike"
+msgstr ""
+
+#: view/guest/site/guest/🖒-browse.phtml:23
+msgid "My Likes"
+msgstr ""
+
+#: view/guest/site/guest/🖒-browse.phtml:31
+msgid "You have not liked any resources yet."
+msgstr ""
+
+#: view/guest/site/guest/🖒-browse.phtml:34
+#, php-format
+msgid "You have liked %d resources."
+msgstr ""
+
+#: view/guest/site/guest/🖒-browse.phtml:66
+#, php-format
+msgid "Liked on %s"
+msgstr ""
+
+#: view/guest/site/guest/widget/🖒.phtml:31
+#, php-format
+msgid "My likes (%d)"
+msgstr ""
+
+#: Module.php:644
+msgid "🖒 status"
+msgstr ""
+
+#: Module.php:665
+msgid "Like count (module 🖒)"
+msgstr ""
+
+#: Module.php:715
+msgid "Reset all likes"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:27 src/Form/SettingsFieldset.php:44
+msgid "Allow 👎"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:43 src/Form/SettingsFieldset.php:55
+msgid "Show count of ❤️"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:59 src/Form/SettingsFieldset.php:66
+msgid "Show count of 👎"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:75 src/Form/SettingsFieldset.php:77
+msgid "Icon style"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:78 src/Form/SettingsFieldset.php:79
+msgid "Unicode (emoji)"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:79 src/Form/SettingsFieldset.php:80
+msgid "Font Awesome"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:91 src/Form/SettingsFieldset.php:92
+msgid "Icon shape"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:94 src/Form/SettingsFieldset.php:94
+msgid "Heart (❤️/💔)"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:95 src/Form/SettingsFieldset.php:95
+msgid "Thumb (👍/👎)"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:96 src/Form/SettingsFieldset.php:96
+msgid "Reversed thumb (🖒/🖓)"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:97 src/Form/SettingsFieldset.php:97
+msgid "Thumb / Reversed (👍/🖓)"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:98 src/Form/SettingsFieldset.php:98
+msgid "Reversed / Thumb (🖒/👎)"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:110 src/Form/SettingsFieldset.php:110
+msgid "Allow users to change their vote"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:126 src/Form/SettingsFieldset.php:121
+msgid "Anonymous visitor can view counts"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:144
+msgid "Guest widget label"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:145
+msgid "Label shown in the guest dashboard widget. Default: \"Likes\"."
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:157
+msgid "Guest link label"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:158
+#, php-format
+msgid ""
+"Label for the link in the guest widget. Use %d for the count. Default: \"My "
+"likes (%d)\"."
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:170
+msgid "Guest page title"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:171
+msgid "Title of the guest likes page. Default: \"My Likes\"."
+msgstr ""
+
+#: src/Form/SettingsFieldset.php:28
+msgid "Resources to enable likes on"
+msgstr ""
+
+#: src/Api/Adapter/LikeAdapter.php:358
+msgid "A like must have an owner."
+msgstr ""
+
+#: src/Api/Adapter/LikeAdapter.php:363
+msgid "A like must have a resource."
+msgstr ""
+
+#: src/Api/Adapter/LikeAdapter.php:378
+msgid "This user already has a like/dislike on this resource."
+msgstr ""
+
+#: src/ColumnType/🖒Count.php:23
+msgid "Like count"
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:74
+msgid "Like successfully deleted."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:94
+msgid "You must select at least one like to batch delete."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:103
+msgid "Likes successfully deleted."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:123
+msgid "You must select at least one resource."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:139
+msgid "{count} likes have been reset."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:167
+#: src/Controller/Site/IndexController.php:45
+msgid "Method not allowed."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:172
+msgid "You must be logged in."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:179
+#: src/Controller/Site/IndexController.php:60
+#: src/Controller/Site/IndexController.php:112
+msgid "Invalid resource."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:212 config/module.config.php:165
+msgid "An error occurred."
+msgstr ""
+
+#: src/Controller/Site/IndexController.php:52
+msgid "You must be logged in to like or dislike resources."
+msgstr ""
+
+#: src/Controller/Site/IndexController.php:97 config/module.config.php:166
+msgid "An error occurred while processing your request."
+msgstr ""
+
+#: src/Site/Navigation/Link/Like.php:27
+msgid "Invalid navigation: link without label"
+msgstr ""
+
+#: src/Site/ResourcePageBlockLayout/🖒Button.php:13
+msgid "🖒: Button"
+msgstr ""
+
+#: config/module.config.php:163
+msgid "You must be logged in to 🖒 resources."
+msgstr ""
