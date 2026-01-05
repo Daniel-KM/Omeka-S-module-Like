@@ -1,0 +1,91 @@
+<?php
+/**
+ * Browse user's likes for guest dashboard.
+ *
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\SiteRepresentation $site
+ * @var \Omeka\Entity\User $user
+ * @var \🖒\Api\Representation\LikeRepresentation[] $likes
+ * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation[] $resources
+ * @var int $totalCount
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$escape = $plugins->get('escapeHtml');
+$hyperlink = $plugins->get('hyperlink');
+$thumbnail = $plugins->get('thumbnail');
+$siteSetting = $plugins->get('siteSetting');
+$i18n = $plugins->get('i18n');
+
+$this->headLink()->appendStylesheet($this->assetUrl('css/🖒.css', '🖒'));
+
+$title = $siteSetting('🖒_guest_page_title') ?: $translate('My Likes');
+$this->htmlElement('body')->appendAttribute('class', 'like-browse guest-like-browse');
+?>
+
+<?= $this->pageTitle($title) ?>
+
+<div class="like-browse-container">
+    <?php if (empty($likes)): ?>
+        <p><?= $escape($translate('You have not liked any resources yet.')) ?></p>
+    <?php else: ?>
+        <p class="like-count-summary">
+            <?= sprintf($translate('You have liked %d resource(s).'), $totalCount) ?>
+        </p>
+
+        <div class="likes-list resources">
+            <?php foreach ($likes as $like):
+                $resource = $resources[$like->id()] ?? null;
+                if (!$resource) {
+                    continue;
+                }
+                $resourceName = $resource->resourceName();
+            ?>
+            <div class="like-item resource <?= $resourceName ?>">
+                <?php if ($resource->primaryMedia()): ?>
+                <div class="resource-thumbnail">
+                    <?= $hyperlink($thumbnail($resource, 'medium'), $resource->siteUrl()) ?>
+                </div>
+                <?php endif; ?>
+
+                <div class="resource-details">
+                    <h4 class="resource-title">
+                        <?= $hyperlink($resource->displayTitle(), $resource->siteUrl()) ?>
+                    </h4>
+
+                    <?php if ($description = $resource->displayDescription()): ?>
+                    <div class="resource-description">
+                        <?= $escape($this->truncate($description, 200)) ?>
+                    </div>
+                    <?php endif; ?>
+
+                    <div class="like-meta">
+                        <span class="like-date">
+                            <?= $escape(sprintf(
+                                $translate('Liked on %s'),
+                                $i18n->dateFormat($like->created(), 'medium')
+                            )) ?>
+                        </span>
+                        <?php if ($like->liked()): ?>
+                            <span class="like-status liked">
+                                <span class="fa fa-thumbs-up"></span>
+                            </span>
+                        <?php else: ?>
+                            <span class="like-status disliked">
+                                <span class="fa fa-thumbs-down"></span>
+                            </span>
+                        <?php endif; ?>
+                    </div>
+
+                    <div class="like-actions">
+                        <?= $this->🖒($resource) ?>
+                    </div>
+                </div>
+            </div>
+            <?php endforeach; ?>
+        </div>
+
+        <?= $this->pagination() ?>
+    <?php endif; ?>
+</div>

@@ -1,0 +1,37 @@
+<?php
+/**
+ * Widget for guest dashboard showing link to user's likes.
+ *
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+$siteSetting = $plugins->get('siteSetting');
+$api = $plugins->get('api');
+
+$user = $this->identity();
+$userId = $user ? (method_exists($user, 'id') ? $user->id() : $user->getId()) : null;
+
+// Get the count of user's likes.
+$likeCount = 0;
+if ($userId) {
+    $response = $api->search('likes', ['owner_id' => $userId, 'limit' => 0]);
+    $likeCount = $response->getTotalResults();
+}
+?>
+
+<ul>
+    <li>
+        <?= $hyperlink(
+            $escape(sprintf(
+                $siteSetting('🖒_guest_link_label') ?: $translate('My likes (%d)'), // @translate
+                $likeCount
+            )),
+            $url('site/guest/like', ['action' => 'browse'], true)
+        ) ?>
+    </li>
+</ul>

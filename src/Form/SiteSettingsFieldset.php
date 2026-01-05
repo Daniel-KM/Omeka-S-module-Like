@@ -134,6 +134,47 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => '🖒_allow_public_view',
                 ],
             ])
+
+            // Guest integration settings.
+            ->add([
+                'name' => '🖒_guest_widget_label',
+                'type' => \Laminas\Form\Element\Text::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Guest widget label', // @translate
+                    'info' => 'Label shown in the guest dashboard widget. Default: "Likes".', // @translate
+                ],
+                'attributes' => [
+                    'id' => '🖒_guest_widget_label',
+                    'placeholder' => 'Likes', // @translate
+                ],
+            ])
+            ->add([
+                'name' => '🖒_guest_link_label',
+                'type' => \Laminas\Form\Element\Text::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Guest link label', // @translate
+                    'info' => 'Label for the link in the guest widget. Use %d for the count. Default: "My likes (%d)".', // @translate
+                ],
+                'attributes' => [
+                    'id' => '🖒_guest_link_label',
+                    'placeholder' => 'My likes (%d)', // @translate
+                ],
+            ])
+            ->add([
+                'name' => '🖒_guest_page_title',
+                'type' => \Laminas\Form\Element\Text::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Guest page title', // @translate
+                    'info' => 'Title of the guest likes page. Default: "My Likes".', // @translate
+                ],
+                'attributes' => [
+                    'id' => '🖒_guest_page_title',
+                    'placeholder' => 'My Likes', // @translate
+                ],
+            ])
         ;
     }
 }

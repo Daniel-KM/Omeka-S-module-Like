@@ -117,6 +117,11 @@ class Module extends AbstractModule
                 $roles,
                 [Controller\Site\IndexController::class],
                 ['toggle', 'status']
+            )
+            ->allow(
+                $roles,
+                [Controller\Site\GuestController::class],
+                ['browse']
             );
 
         // Admins can manage all likes.
@@ -340,6 +345,13 @@ class Module extends AbstractModule
             \Omeka\Api\Adapter\MediaAdapter::class,
             'api.preprocess_batch_update',
             [$this, 'handleResourceBatchUpdatePreprocess']
+        );
+
+        // Guest module integration.
+        $sharedEventManager->attach(
+            \Guest\Controller\Site\GuestController::class,
+            'guest.widgets',
+            [$this, 'handleGuestWidgets']
         );
     }
 
@@ -761,5 +773,25 @@ class Module extends AbstractModule
             return 'media';
         }
         return null;
+    }
+
+    /**
+     * Add widget to guest dashboard.
+     */
+    public function handleGuestWidgets(Event $event): void
+    {
+        $services = $this->getServiceLocator();
+        $plugins = $services->get('ViewHelperManager');
+        $partial = $plugins->get('partial');
+        $translate = $plugins->get('translate');
+        $siteSettings = $services->get('Omeka\Settings\Site');
+
+        $widget = [];
+        $widget['label'] = $siteSettings->get('🖒_guest_widget_label') ?: $translate('Likes'); // @translate
+        $widget['content'] = $partial('guest/site/guest/widget/🖒');
+
+        $widgets = $event->getParam('widgets');
+        $widgets['🖒'] = $widget;
+        $event->setParam('widgets', $widgets);
     }
 }

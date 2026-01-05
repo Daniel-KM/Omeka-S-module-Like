@@ -39,6 +39,12 @@ return [
         'factories' => [
             Controller\Admin\IndexController::class => Service\Controller\Admin\IndexControllerFactory::class,
             Controller\Site\IndexController::class => Service\Controller\Site\IndexControllerFactory::class,
+            Controller\Site\GuestController::class => Service\Controller\Site\GuestControllerFactory::class,
+        ],
+    ],
+    'navigation_links' => [
+        'invokables' => [
+            'like' => Site\Navigation\Link\Like::class,
         ],
     ],
     'resource_page_block_layouts' => [
@@ -79,6 +85,30 @@ return [
                                 '__NAMESPACE__' => '🖒\Controller\Site',
                                 'controller' => Controller\Site\IndexController::class,
                                 'action' => 'toggle',
+                            ],
+                        ],
+                    ],
+                    // Guest integration: add routes under /guest/like.
+                    'guest' => [
+                        'type' => \Laminas\Router\Http\Literal::class,
+                        'options' => [
+                            'route' => '/guest',
+                        ],
+                        'may_terminate' => true,
+                        'child_routes' => [
+                            'like' => [
+                                'type' => \Laminas\Router\Http\Segment::class,
+                                'options' => [
+                                    'route' => '/like[/:action]',
+                                    'constraints' => [
+                                        'action' => 'browse',
+                                    ],
+                                    'defaults' => [
+                                        '__NAMESPACE__' => '🖒\Controller\Site',
+                                        'controller' => Controller\Site\GuestController::class,
+                                        'action' => 'browse',
+                                    ],
+                                ],
                             ],
                         ],
                     ],
@@ -156,6 +186,9 @@ return [
             '🖒_icon_type' => '',
             '🖒_icon_shape' => '',
             '🖒_allow_change_vote' => '',
+            '🖒_guest_widget_label' => '',
+            '🖒_guest_link_label' => '',
+            '🖒_guest_page_title' => '',
         ],
     ],
 ];
