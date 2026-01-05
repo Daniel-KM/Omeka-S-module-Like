@@ -22,7 +22,7 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
 
     public function testFieldsetHasCorrectLabel(): void
     {
-        $this->assertEquals('🖒', $this->fieldset->getLabel());
+        $this->assertEquals('👍', $this->fieldset->getLabel());
     }
 
     public function testFieldsetHasIdAttribute(): void
@@ -34,7 +34,7 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
     {
         $this->assertTrue($this->fieldset->has('🖒_allow_dislike'));
         $element = $this->fieldset->get('🖒_allow_dislike');
-        $this->assertEquals('Allow 🖓', $element->getLabel());
+        $this->assertEquals('Allow 👎', $element->getLabel());
 
         $valueOptions = $element->getValueOptions();
         $this->assertArrayHasKey('', $valueOptions);
@@ -47,7 +47,7 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
     {
         $this->assertTrue($this->fieldset->has('🖒_show_count_like'));
         $element = $this->fieldset->get('🖒_show_count_like');
-        $this->assertEquals('Show count of 🖒', $element->getLabel());
+        $this->assertEquals('Show count of ❤️', $element->getLabel());
 
         $valueOptions = $element->getValueOptions();
         $this->assertArrayHasKey('', $valueOptions);
@@ -58,7 +58,7 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
     {
         $this->assertTrue($this->fieldset->has('🖒_show_count_dislike'));
         $element = $this->fieldset->get('🖒_show_count_dislike');
-        $this->assertEquals('Show count of 🖓', $element->getLabel());
+        $this->assertEquals('Show count of 👎', $element->getLabel());
     }
 
     public function testFieldsetHasIconTypeElement(): void
@@ -84,6 +84,9 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
         $this->assertArrayHasKey('', $valueOptions);
         $this->assertArrayHasKey('heart', $valueOptions);
         $this->assertArrayHasKey('thumb', $valueOptions);
+        $this->assertArrayHasKey('reverse', $valueOptions);
+        $this->assertArrayHasKey('thumb-reverse', $valueOptions);
+        $this->assertArrayHasKey('reverse-thumb', $valueOptions);
         $this->assertEquals('Use global setting', $valueOptions['']);
     }
 

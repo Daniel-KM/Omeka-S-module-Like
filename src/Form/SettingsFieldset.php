@@ -8,10 +8,10 @@ use Laminas\Form\Fieldset;
 
 class SettingsFieldset extends Fieldset
 {
-    protected $label = '🖒';
+    protected $label = '👍';
 
     protected $elementGroups = [
-        '🖒' => '🖒',
+        '🖒' => '👍',
     ];
 
     public function init(): void
@@ -41,7 +41,7 @@ class SettingsFieldset extends Fieldset
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Allow 🖓', // @translate
+                    'label' => 'Allow 👎', // @translate
                 ],
                 'attributes' => [
                     'id' => '🖒_allow_dislike',
@@ -52,7 +52,7 @@ class SettingsFieldset extends Fieldset
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Show count of 🖒', // @translate
+                    'label' => 'Show count of ❤️', // @translate
                 ],
                 'attributes' => [
                     'id' => '🖒_show_count_like',
@@ -63,7 +63,7 @@ class SettingsFieldset extends Fieldset
                 'type' => Element\Checkbox::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Show count of 🖓', // @translate
+                    'label' => 'Show count of 👎', // @translate
                 ],
                 'attributes' => [
                     'id' => '🖒_show_count_dislike',
@@ -74,7 +74,7 @@ class SettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Icon type', // @translate
+                    'label' => 'Icon style', // @translate
                     'value_options' => [
                         'unicode' => 'Unicode (emoji)', // @translate
                         'fa' => 'Font Awesome', // @translate
@@ -91,8 +91,11 @@ class SettingsFieldset extends Fieldset
                     'element_group' => '🖒',
                     'label' => 'Icon shape', // @translate
                     'value_options' => [
-                        'heart' => 'Heart', // @translate
-                        'thumb' => 'Thumb up/down', // @translate
+                        'heart' => 'Heart (❤️/💔)', // @translate
+                        'thumb' => 'Thumb (👍/👎)', // @translate
+                        'reverse' => 'Reversed thumb (🖒/🖓)', // @translate
+                        'thumb-reverse' => 'Thumb / Reversed (👍/🖓)', // @translate
+                        'reverse-thumb' => 'Reversed / Thumb (🖒/👎)', // @translate
                     ],
                 ],
                 'attributes' => [

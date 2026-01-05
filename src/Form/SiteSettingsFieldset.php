@@ -7,10 +7,10 @@ use Laminas\Form\Fieldset;
 
 class SiteSettingsFieldset extends Fieldset
 {
-    protected $label = '🖒';
+    protected $label = '👍';
 
     protected $elementGroups = [
-        '🖒' => '🖒',
+        '🖒' => '👍',
     ];
 
     public function init(): void
@@ -24,7 +24,7 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Allow 🖓', // @translate
+                    'label' => 'Allow 👎', // @translate
                     'value_options' => [
                         '' => 'Use global setting', // @translate
                         '1' => 'Yes', // @translate
@@ -40,7 +40,7 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Show count of 🖒', // @translate
+                    'label' => 'Show count of ❤️', // @translate
                     'value_options' => [
                         '' => 'Use global setting', // @translate
                         '1' => 'Yes', // @translate
@@ -56,7 +56,7 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalRadio::class,
                 'options' => [
                     'element_group' => '🖒',
-                    'label' => 'Show count of 🖓', // @translate
+                    'label' => 'Show count of 👎', // @translate
                     'value_options' => [
                         '' => 'Use global setting', // @translate
                         '1' => 'Yes', // @translate
@@ -91,8 +91,11 @@ class SiteSettingsFieldset extends Fieldset
                     'label' => 'Icon shape', // @translate
                     'value_options' => [
                         '' => 'Use global setting', // @translate
-                        'heart' => 'Heart', // @translate
-                        'thumb' => 'Thumb up/down', // @translate
+                        'heart' => 'Heart (❤️/💔)', // @translate
+                        'thumb' => 'Thumb (👍/👎)', // @translate
+                        'reverse' => 'Reversed thumb (🖒/🖓)', // @translate
+                        'thumb-reverse' => 'Thumb / Reversed (👍/🖓)', // @translate
+                        'reverse-thumb' => 'Reversed / Thumb (🖒/👎)', // @translate
                     ],
                 ],
                 'attributes' => [

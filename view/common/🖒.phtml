@@ -23,35 +23,51 @@ $showCount🖓 = $options['showCount🖓'] ?? false;
 $allow🖓 = $options['allow🖓'] ?? true;
 
 // Icons based on shape.
-if ($iconShape === 'heart') {
-    // Unicode heart characters.
-    $iconUnicodeLike = '❤️';
-    $iconUnicodeDislike = '💔';
-    // Font Awesome classes.
-    $iconLikeFa = 'fa-heart';
-    $iconDislikeFa = 'fa-heart-broken';
-} else {
-    // Unicode thumbs characters.
-    $iconUnicodeLike = '🖒';
-    $iconUnicodeDislike = '🖓';
-    // Font Awesome classes.
-    $iconLikeFa = 'fa-thumbs-up';
-    $iconDislikeFa = 'fa-thumbs-down';
+switch ($iconShape) {
+    case 'thumb':
+        $iconUnicodeLike = '👍';
+        $iconUnicodeDislike = '👎';
+        $iconLikeFa = 'fa-thumbs-up';
+        $iconDislikeFa = 'fa-thumbs-down';
+        break;
+    case 'reverse':
+        $iconUnicodeLike = '🖒';
+        $iconUnicodeDislike = '🖓';
+        $iconLikeFa = 'fa-thumbs-up';
+        $iconDislikeFa = 'fa-thumbs-down';
+        break;
+    case 'thumb-reverse':
+        $iconUnicodeLike = '👍';
+        $iconUnicodeDislike = '🖓';
+        $iconLikeFa = 'fa-thumbs-up';
+        $iconDislikeFa = 'fa-thumbs-down';
+        break;
+    case 'reverse-thumb':
+        $iconUnicodeLike = '🖒';
+        $iconUnicodeDislike = '👎';
+        $iconLikeFa = 'fa-thumbs-up';
+        $iconDislikeFa = 'fa-thumbs-down';
+        break;
+    case 'heart':
+    default:
+        $iconUnicodeLike = '❤️';
+        $iconUnicodeDislike = '💔';
+        $iconLikeFa = 'fa-heart';
+        $iconDislikeFa = 'fa-heart-broken';
+        break;
 }
 
 // Determine button states.
 $likeActive = $userLiked === true ? 'active' : '';
 $dislikeActive = $userLiked === false ? 'active' : '';
 
-// Build login message based on icon shape and allow dislike.
-if ($iconShape === 'heart') {
-    $loginMessage = $allow🖓
-        ? $translate('You must be logged in to ❤️ or 💔 resources.')
-        : $translate('You must be logged in to ❤️ resources.');
+// Build login message based on icons.
+if ($allow🖓) {
+    $loginMessage = $translate('You must be logged in to %1$s or %2$s resources.');
+    $loginMessage = sprintf($loginMessage, $iconUnicodeLike, $iconUnicodeDislike);
 } else {
-    $loginMessage = $allow🖓
-        ? $translate('You must be logged in to 🖒 or 🖓 resources.')
-        : $translate('You must be logged in to 🖒 resources.');
+    $loginMessage = $translate('You must be logged in to %s resources.');
+    $loginMessage = sprintf($loginMessage, $iconUnicodeLike);
 }
 ?>
 
