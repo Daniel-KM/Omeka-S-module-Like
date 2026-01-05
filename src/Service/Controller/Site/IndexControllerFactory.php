@@ -11,6 +11,8 @@ class IndexControllerFactory implements FactoryInterface
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
         $likeAdapter = $services->get('Omeka\ApiAdapterManager')->get('likes');
-        return new IndexController($likeAdapter);
+        $settings = $services->get('Omeka\Settings');
+        $siteSettings = $services->get('Omeka\Settings\Site');
+        return new IndexController($likeAdapter, $settings, $siteSettings);
     }
 }

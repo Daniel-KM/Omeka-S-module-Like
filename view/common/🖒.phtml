@@ -21,6 +21,11 @@ $iconShape = $options['iconShape'] ?? 'heart';
 $showCount🖒 = $options['showCount🖒'] ?? true;
 $showCount🖓 = $options['showCount🖓'] ?? false;
 $allow🖓 = $options['allow🖓'] ?? true;
+$allowChangeVote = $options['allowChangeVote'] ?? true;
+
+// Check if user already voted and cannot change.
+$hasVoted = $userLiked !== null;
+$voteLocked = $hasVoted && !$allowChangeVote;
 
 // Icons based on shape.
 switch ($iconShape) {
@@ -71,8 +76,12 @@ if ($allow🖓) {
 }
 ?>
 
-<div class="like-container" data-resource-id="<?= $resource->id() ?>" data-url-toggle="<?= $escapeAttr($toggleUrl) ?>" data-message-login="<?= $escapeAttr($loginMessage) ?>">
-    <button type="button" class="like-button like-action <?= $likeActive ?>" data-action="like" data-liked="true" title="<?= $escapeAttr($translate('Like')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?>>
+<?php
+$lockedMessage = $translate('You cannot change your vote.');
+$containerClass = 'like-container' . ($voteLocked ? ' vote-locked' : '');
+?>
+<div class="<?= $containerClass ?>" data-resource-id="<?= $resource->id() ?>" data-url-toggle="<?= $escapeAttr($toggleUrl) ?>" data-message-login="<?= $escapeAttr($loginMessage) ?>" data-message-locked="<?= $escapeAttr($lockedMessage) ?>" data-vote-locked="<?= $voteLocked ? 'true' : 'false' ?>">
+    <button type="button" class="like-button like-action <?= $likeActive ?>" data-action="like" data-liked="true" title="<?= $escapeAttr($translate('Like')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?> <?= $voteLocked ? 'disabled' : '' ?>>
         <?php if ($iconType === 'fa'): ?>
             <span class="fa <?= $iconLikeFa ?>"></span>
         <?php else: ?>
@@ -83,7 +92,7 @@ if ($allow🖓) {
         <?php endif; ?>
     </button>
     <?php if ($allow🖓): ?>
-    <button type="button" class="like-button dislike-action <?= $dislikeActive ?>" data-action="dislike" data-liked="false" title="<?= $escapeAttr($translate('Dislike')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?>>
+    <button type="button" class="like-button dislike-action <?= $dislikeActive ?>" data-action="dislike" data-liked="false" title="<?= $escapeAttr($translate('Dislike')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?> <?= $voteLocked ? 'disabled' : '' ?>>
         <?php if ($iconType === 'fa'): ?>
             <span class="fa <?= $iconDislikeFa ?>"></span>
         <?php else: ?>

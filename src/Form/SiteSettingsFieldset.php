@@ -102,6 +102,22 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => '🖒_icon_shape',
                 ],
             ])
+            ->add([
+                'name' => '🖒_allow_change_vote',
+                'type' => CommonElement\OptionalRadio::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Allow users to change their vote', // @translate
+                    'value_options' => [
+                        '' => 'Use global setting', // @translate
+                        '1' => 'Yes', // @translate
+                        '0' => 'No', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => '🖒_allow_change_vote',
+                ],
+            ])
         ;
     }
 }

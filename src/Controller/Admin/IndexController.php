@@ -5,6 +5,7 @@ namespace 🖒\Controller\Admin;
 use Common\Stdlib\PsrMessage;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
+use Omeka\Settings\Settings;
 use 🖒\Api\Adapter\LikeAdapter;
 
 class IndexController extends AbstractActionController
@@ -14,9 +15,15 @@ class IndexController extends AbstractActionController
      */
     protected $likeAdapter;
 
-    public function __construct(LikeAdapter $likeAdapter)
+    /**
+     * @var \Omeka\Settings\Settings
+     */
+    protected $settings;
+
+    public function __construct(LikeAdapter $likeAdapter, Settings $settings)
     {
         $this->likeAdapter = $likeAdapter;
+        $this->settings = $settings;
     }
 
     /**
@@ -179,8 +186,19 @@ class IndexController extends AbstractActionController
             $liked = filter_var($liked, FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
         }
 
+        // Check if changing vote is allowed.
+        $allowChangeVote = (bool) $this->settings->get('🖒_allow_change_vote', true);
+
         try {
-            $result = $this->likeAdapter->toggleLike($resourceId, $user->getId(), $liked);
+            $result = $this->likeAdapter->toggleLike($resourceId, $user->getId(), $liked, $allowChangeVote);
+
+            if ($result['action'] === 'denied') {
+                return $this->jSend()->fail(
+                    ['action' => 'denied', 'liked' => $result['liked']],
+                    new PsrMessage('You cannot change your vote.') // @translate
+                );
+            }
+
             $counts = $this->likeAdapter->getLikeCounts($resourceId);
 
             return $this->jSend()->success([

@@ -17,6 +17,13 @@
                 return;
             }
 
+            // Check if vote is locked (user cannot change vote).
+            if ($container.data('vote-locked') === true || $container.data('vote-locked') === 'true') {
+                var lockedMessage = $container.data('message-locked') || 'You cannot change your vote.';
+                CommonDialog.dialogAlert(lockedMessage);
+                return;
+            }
+
             // Prevent double-clicks.
             if ($container.hasClass('loading')) {
                 return;
@@ -49,6 +56,13 @@
                     if (response.data && response.data.requireLogin) {
                         var loginMessage = $container.data('message-login') || Omeka.jsTranslate('You must be logged in to 🖒 resources.');
                         CommonDialog.dialogAlert(response.message || loginMessage);
+                    } else if (response.data && response.data.action === 'denied') {
+                        // Vote change was denied - lock the container.
+                        $container.data('vote-locked', true);
+                        $container.addClass('vote-locked');
+                        $container.find('.like-button').prop('disabled', true);
+                        var lockedMessage = $container.data('message-locked') || 'You cannot change your vote.';
+                        CommonDialog.dialogAlert(response.message || lockedMessage);
                     } else {
                         CommonDialog.dialogAlert(response.message || Omeka.jsTranslate('An error occurred.'));
                     }

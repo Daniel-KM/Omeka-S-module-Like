@@ -103,6 +103,17 @@ class SettingsFieldset extends Fieldset
                 ],
             ])
             ->add([
+                'name' => '🖒_allow_change_vote',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Allow users to change their vote', // @translate
+                ],
+                'attributes' => [
+                    'id' => '🖒_allow_change_vote',
+                ],
+            ])
+            ->add([
                 'name' => '🖒_allow_public_view',
                 'type' => Element\Checkbox::class,
                 'options' => [

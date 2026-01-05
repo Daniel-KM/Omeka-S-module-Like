@@ -147,12 +147,14 @@ class 🖒 extends AbstractHelper
             $iconType = $this->siteSettings->get('🖒_icon_type', 'unicode');
             $iconShape = $this->siteSettings->get('🖒_icon_shape', 'heart');
             $allow🖓 = $this->siteSettings->get('🖒_allow_dislike', false);
+            $allowChangeVote = $this->siteSettings->get('🖒_allow_change_vote', '');
             $defaults = [
                 'showCount🖒' => (bool) ($showCount🖒 === '' ? $this->settings->get('🖒_show_count_like', true) : $showCount🖒),
                 'showCount🖓' => (bool) ($showCount🖓 === '' ? $this->settings->get('🖒_show_count_dislike', true) : $showCount🖓),
                 'iconType' => $iconType === '' ? $this->settings->get('🖒_icon_type', 'unicode') : $iconType,
                 'iconShape' => $iconShape === '' ? $this->settings->get('🖒_icon_shape', 'heart') : $iconShape,
                 'allow🖓' => (bool) ($allow🖓 === '' ? $this->settings->get('🖒_allow_dislike', true) : $allow🖓),
+                'allowChangeVote' => (bool) ($allowChangeVote === '' ? $this->settings->get('🖒_allow_change_vote', true) : $allowChangeVote),
                 'template' => 'common/🖒',
             ];
         } else {
@@ -162,6 +164,7 @@ class 🖒 extends AbstractHelper
                 'iconType' => $this->settings->get('🖒_icon_type', 'unicode'),
                 'iconShape' => $this->settings->get('🖒_icon_shape', 'heart'),
                 'allow🖓' => (bool) $this->settings->get('🖒_allow_dislike', true),
+                'allowChangeVote' => (bool) $this->settings->get('🖒_allow_change_vote', true),
                 'template' => 'common/🖒',
             ];
         }

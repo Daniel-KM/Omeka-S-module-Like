@@ -430,9 +430,10 @@ class LikeAdapter extends AbstractEntityAdapter
      * @param int $resourceId
      * @param int $userId
      * @param bool|null $liked null to remove, true/false to set
-     * @return array with 'action' (created, updated, deleted) and 'liked' status
+     * @param bool $allowChangeVote whether changing/removing vote is allowed
+     * @return array with 'action' (created, updated, deleted, denied) and 'liked' status
      */
-    public function toggleLike(int $resourceId, int $userId, ?bool $liked): array
+    public function toggleLike(int $resourceId, int $userId, ?bool $liked, bool $allowChangeVote = true): array
     {
         $entityManager = $this->getEntityManager();
         $repository = $entityManager->getRepository(Like::class);
@@ -441,6 +442,11 @@ class LikeAdapter extends AbstractEntityAdapter
             'resource' => $resourceId,
             'owner' => $userId,
         ]);
+
+        // If user already voted and changing vote is not allowed, deny the action.
+        if ($existingLike && !$allowChangeVote) {
+            return ['action' => 'denied', 'liked' => $existingLike->isLiked()];
+        }
 
         // Remove like if liked is null or if clicking on same state.
         if ($liked === null || ($existingLike && $existingLike->isLiked() === $liked)) {
