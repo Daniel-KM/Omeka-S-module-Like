@@ -52,7 +52,8 @@ return [
         ],
     ],
     'navigation' => [
-        'AdminModule' => [
+        // Displayed under the Users section in admin sidebar (injected by module Guest).
+        'AdminUsers' => [
             [
                 'label' => 'Likes', // @translate
                 'route' => 'admin/like',
