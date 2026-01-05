@@ -4,11 +4,14 @@ namespace 🖒\Api\Adapter;
 
 use Common\Api\Adapter\CommonAdapterTrait;
 use DateTime;
+use Doctrine\ORM\Query\ResultSetMapping;
 use Doctrine\ORM\QueryBuilder;
+use Laminas\EventManager\Event;
 use 🖒\Api\Representation\LikeRepresentation;
 use 🖒\Entity\Like;
 use Omeka\Api\Adapter\AbstractEntityAdapter;
 use Omeka\Api\Request;
+use Omeka\Api\Response;
 use Omeka\Entity\EntityInterface;
 use Omeka\Stdlib\ErrorStore;
 
@@ -76,44 +79,106 @@ class LikeAdapter extends AbstractEntityAdapter
 
     public function buildQuery(QueryBuilder $qb, array $query): void
     {
-        // Use CommonAdapterTrait for standard query fields.
-        $this->buildQueryFields($qb, $query);
+        // Note: This method is not used for this adapter since we override
+        // search() to use native SQL (Doctrine DQL parser doesn't support
+        // Unicode namespace characters like emoji).
+    }
 
-        $expr = $qb->expr();
+    /**
+     * {@inheritDoc}
+     *
+     * Override to use Native SQL instead of DQL.
+     *
+     * Doctrine's DQL parser doesn't support Unicode characters (like emoji)
+     * in namespace names. The official Doctrine approach for such cases is
+     * to use Native SQL queries with ResultSetMapping.
+     *
+     * @see https://www.doctrine-project.org/projects/doctrine-orm/en/current/reference/native-sql.html
+     */
+    public function search(Request $request)
+    {
+        $query = $request->getContent();
 
-        // Filter by resource type (items, item_sets, media).
+        // Set default query parameters (same as parent).
+        if (!isset($query['page'])) {
+            $query['page'] = null;
+        }
+        if (!isset($query['per_page'])) {
+            $query['per_page'] = null;
+        }
+        if (!isset($query['limit'])) {
+            $query['limit'] = null;
+        }
+        if (!isset($query['offset'])) {
+            $query['offset'] = null;
+        }
+        if (!isset($query['sort_by'])) {
+            $query['sort_by'] = null;
+        }
+        if (isset($query['sort_order'])
+            && in_array(strtoupper($query['sort_order']), ['ASC', 'DESC'])
+        ) {
+            $query['sort_order'] = strtoupper($query['sort_order']);
+        } else {
+            $query['sort_order'] = 'ASC';
+        }
+        if (!isset($query['return_scalar'])) {
+            $query['return_scalar'] = null;
+        }
+
+        $em = $this->getEntityManager();
+        $conn = $em->getConnection();
+
+        // Build SQL query.
+        $baseSql = 'FROM `like` l';
+        $joins = '';
+        $params = [];
+        $whereClauses = [];
+
+        // Filter by owner.
+        if (!empty($query['owner_id'])) {
+            $whereClauses[] = 'l.owner_id = :owner_id';
+            $params['owner_id'] = (int) $query['owner_id'];
+        }
+
+        // Filter by resource.
+        if (!empty($query['resource_id'])) {
+            $whereClauses[] = 'l.resource_id = :resource_id';
+            $params['resource_id'] = (int) $query['resource_id'];
+        }
+
+        // Filter by liked status.
+        if (isset($query['liked']) && $query['liked'] !== '') {
+            $whereClauses[] = 'l.liked = :liked';
+            $params['liked'] = (bool) $query['liked'] ? 1 : 0;
+        }
+
+        // Filter by resource type.
         if (!empty($query['resource_type'])) {
             $resourceTypes = is_array($query['resource_type'])
                 ? $query['resource_type']
                 : [$query['resource_type']];
 
-            $resourceClasses = [];
-            $classMap = [
-                'items' => \Omeka\Entity\Item::class,
-                'item_sets' => \Omeka\Entity\ItemSet::class,
-                'media' => \Omeka\Entity\Media::class,
+            $discriminatorMap = [
+                'items' => 'Omeka\\Entity\\Item',
+                'item_sets' => 'Omeka\\Entity\\ItemSet',
+                'media' => 'Omeka\\Entity\\Media',
             ];
 
+            $types = [];
             foreach ($resourceTypes as $type) {
-                if (isset($classMap[$type])) {
-                    $resourceClasses[] = $classMap[$type];
+                if (isset($discriminatorMap[$type])) {
+                    $types[] = $conn->quote($discriminatorMap[$type]);
                 }
             }
 
-            if ($resourceClasses) {
-                $resourceAlias = $this->createAlias();
-                $qb->innerJoin(
-                    'omeka_root.resource',
-                    $resourceAlias
-                );
-                $qb->andWhere($expr->in(
-                    $resourceAlias . ' INSTANCE OF',
-                    $resourceClasses
-                ));
+            if ($types) {
+                $joins .= ' INNER JOIN resource r ON l.resource_id = r.id';
+                $whereClauses[] = 'r.resource_type IN (' . implode(',', $types) . ')';
             }
         }
 
-        // Filter by item set (for items only).
+        // Filter by item set.
         if (!empty($query['item_set_id'])) {
             $itemSetIds = is_array($query['item_set_id'])
                 ? $query['item_set_id']
@@ -121,20 +186,139 @@ class LikeAdapter extends AbstractEntityAdapter
             $itemSetIds = array_filter(array_map('intval', $itemSetIds));
 
             if ($itemSetIds) {
-                $resourceAlias = $this->createAlias();
-                $itemSetAlias = $this->createAlias();
-                $qb->innerJoin(
-                    'omeka_root.resource',
-                    $resourceAlias
-                );
-                $qb->innerJoin(
-                    $resourceAlias . '.itemSets',
-                    $itemSetAlias,
-                    'WITH',
-                    $expr->in($itemSetAlias . '.id', $itemSetIds)
-                );
+                $joins .= ' INNER JOIN item_item_set iis ON l.resource_id = iis.item_id';
+                $whereClauses[] = 'iis.item_set_id IN (' . implode(',', $itemSetIds) . ')';
             }
         }
+
+        // Filter by ID(s).
+        if (!empty($query['id'])) {
+            $ids = is_array($query['id']) ? $query['id'] : [$query['id']];
+            $ids = array_filter(array_map('intval', $ids));
+            if ($ids) {
+                $whereClauses[] = 'l.id IN (' . implode(',', $ids) . ')';
+            }
+        }
+
+        $whereClause = $whereClauses ? ' WHERE ' . implode(' AND ', $whereClauses) : '';
+
+        // Trigger the api.search.query event.
+        // Note: Since we use native SQL, QueryBuilder is not available.
+        // Listeners can modify $query via the event if needed.
+        $event = new Event('api.search.query', $this, [
+            'queryBuilder' => null,
+            'request' => $request,
+        ]);
+        $this->getEventManager()->triggerEvent($event);
+
+        // Pagination.
+        $limit = null;
+        $offset = null;
+        if (is_numeric($query['page'])) {
+            $paginator = $this->getServiceLocator()->get('Omeka\Paginator');
+            $paginator->setCurrentPage((int) $query['page']);
+            if (is_numeric($query['per_page'])) {
+                $paginator->setPerPage((int) $query['per_page']);
+            }
+            $limit = $paginator->getPerPage();
+            $offset = $paginator->getOffset();
+        } elseif (is_numeric($query['limit'])) {
+            $limit = (int) $query['limit'];
+            if (is_numeric($query['offset'])) {
+                $offset = (int) $query['offset'];
+            }
+        }
+
+        // Determine if we need count query (same logic as parent).
+        $countQueryDefault = $limit !== null || ($offset !== null && $offset > 0);
+        $countQuery = $request->getOption('countQuery', $countQueryDefault);
+
+        // Count total if needed.
+        $totalResults = 0;
+        if ($countQuery) {
+            $countSql = 'SELECT COUNT(DISTINCT l.id) ' . $baseSql . $joins . $whereClause;
+            $totalResults = (int) $conn->executeQuery($countSql, $params)->fetchOne();
+        }
+
+        // Sorting.
+        $sortBy = $query['sort_by'] ?? 'id';
+        $sortOrder = $query['sort_order'];
+        $validSortFields = ['id', 'owner_id', 'resource_id', 'liked', 'created', 'modified'];
+        if (in_array($sortBy, $validSortFields)) {
+            $orderBy = " ORDER BY l.$sortBy $sortOrder, l.id $sortOrder";
+        } elseif ($sortBy === 'random') {
+            $orderBy = ' ORDER BY RAND()';
+        } else {
+            $orderBy = " ORDER BY l.id $sortOrder";
+        }
+
+        // Handle return_scalar.
+        $scalarField = $request->getOption('returnScalar');
+        if (!$scalarField && $query['return_scalar']) {
+            if (!array_key_exists($query['return_scalar'], $this->scalarFields)) {
+                throw new \Omeka\Api\Exception\BadRequestException(sprintf(
+                    $this->getTranslator()->translate('The "%1$s" field is not available in the %2$s adapter class.'),
+                    $query['return_scalar'], get_class($this)
+                ));
+            }
+            $scalarField = $query['return_scalar'];
+            $request->setOption('returnScalar', $scalarField);
+        }
+
+        if ($scalarField) {
+            $scalarSql = "SELECT l.id, l.$scalarField " . $baseSql . $joins . $whereClause . $orderBy;
+            if ($limit !== null) {
+                $scalarSql .= " LIMIT $limit";
+                if ($offset !== null) {
+                    $scalarSql .= " OFFSET $offset";
+                }
+            }
+            $results = $conn->executeQuery($scalarSql, $params)->fetchAllKeyValue();
+            $response = new Response($results);
+            $response->setTotalResults($countQuery ? $totalResults : count($results));
+            return $response;
+        }
+
+        // Trigger the api.search.query.finalize event.
+        $event = new Event('api.search.query.finalize', $this, [
+            'queryBuilder' => null,
+            'request' => $request,
+        ]);
+        $this->getEventManager()->triggerEvent($event);
+
+        // Build final SQL.
+        $sql = 'SELECT l.* ' . $baseSql . $joins . $whereClause . $orderBy;
+        if ($limit !== null) {
+            $sql .= " LIMIT $limit";
+            if ($offset !== null) {
+                $sql .= " OFFSET $offset";
+            }
+        }
+
+        // Execute query and fetch entities.
+        $entities = [];
+        if ($limit !== 0) {
+            $rsm = new ResultSetMapping();
+            $rsm->addEntityResult(Like::class, 'l');
+            $rsm->addFieldResult('l', 'id', 'id');
+            $rsm->addFieldResult('l', 'liked', 'liked');
+            $rsm->addFieldResult('l', 'created', 'created');
+            $rsm->addFieldResult('l', 'modified', 'modified');
+            $rsm->addMetaResult('l', 'owner_id', 'owner_id');
+            $rsm->addMetaResult('l', 'resource_id', 'resource_id');
+
+            $nativeQuery = $em->createNativeQuery($sql, $rsm);
+            foreach ($params as $key => $value) {
+                $nativeQuery->setParameter($key, $value);
+            }
+
+            $entities = $nativeQuery->getResult();
+        }
+
+        $response = new Response($entities);
+        $response->setTotalResults($countQuery ? $totalResults : count($entities));
+
+        return $response;
     }
 
     public function hydrate(Request $request, EntityInterface $entity, ErrorStore $errorStore): void
