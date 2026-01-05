@@ -511,7 +511,7 @@ class Module extends AbstractModule
         $query = $event->getParam('query', []);
 
         $partials = $event->getParam('partials', []);
-        $partials[] = 'common/advanced-search/like';
+        $partials[] = 'common/advanced-search/🖒';
         $event->setParam('partials', $partials);
     }
 
@@ -572,7 +572,7 @@ class Module extends AbstractModule
             $adapter = $this->getServiceLocator()->get('Omeka\ApiAdapterManager')->get('likes');
             $counts = $adapter->getLikeCounts($resource->id());
 
-            echo $view->partial('common/admin/like-details', [
+            echo $view->partial('common/admin/🖒-details', [
                 'resource' => $resource,
                 'totalLikes' => $counts['likes'],
                 'totalDislikes' => $counts['dislikes'],
@@ -600,7 +600,7 @@ class Module extends AbstractModule
             return;
         }
 
-        echo $event->getTarget()->partial('common/admin/like-details', [
+        echo $event->getTarget()->partial('common/admin/🖒-details', [
             'resource' => $representation,
             'totalLikes' => $counts['likes'],
             'totalDislikes' => $counts['dislikes'],

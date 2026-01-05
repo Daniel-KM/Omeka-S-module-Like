@@ -6,7 +6,7 @@ use Laminas\View\Renderer\PhpRenderer;
 use Omeka\Api\Representation\AbstractEntityRepresentation;
 use Omeka\ColumnType\ColumnTypeInterface;
 
-class LikeCount implements ColumnTypeInterface
+class 🖒Count implements ColumnTypeInterface
 {
     /**
      * @var \🖒\Api\Adapter\LikeAdapter
@@ -57,6 +57,6 @@ class LikeCount implements ColumnTypeInterface
     public function renderContent(PhpRenderer $view, AbstractEntityRepresentation $resource, array $data): ?string
     {
         // Render the full like widget (buttons + counts).
-        return $view->like($resource);
+        return $view->🖒($resource);
     }
 }

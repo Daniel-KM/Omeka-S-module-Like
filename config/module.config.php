@@ -48,7 +48,7 @@ return [
     ],
     'column_types' => [
         'factories' => [
-            '🖒_count' => Service\ColumnType\LikeCountFactory::class,
+            '🖒_count' => Service\ColumnType\🖒CountFactory::class,
         ],
     ],
     'navigation' => [

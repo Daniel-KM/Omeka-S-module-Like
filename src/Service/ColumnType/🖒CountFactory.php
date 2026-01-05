@@ -4,15 +4,15 @@ namespace 🖒\Service\ColumnType;
 
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\FactoryInterface;
-use 🖒\ColumnType\LikeCount;
+use 🖒\ColumnType\🖒Count;
 
-class LikeCountFactory implements FactoryInterface
+class 🖒CountFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
         $apiAdapterManager = $services->get('Omeka\ApiAdapterManager');
         $likeAdapter = $apiAdapterManager->get('likes');
 
-        return new LikeCount($likeAdapter);
+        return new 🖒Count($likeAdapter);
     }
 }
