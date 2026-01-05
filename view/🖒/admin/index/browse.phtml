@@ -29,7 +29,6 @@ $this->htmlElement('body')->appendAttribute('class', 'likes browse');
 <table class="tablesaw" data-tablesaw-mode="stack">
     <thead>
         <tr>
-            <th><?= $translate('ID') ?></th>
             <th><?= $translate('Resource') ?></th>
             <th><?= $translate('User') ?></th>
             <th><?= $translate('Status') ?></th>
@@ -45,7 +44,6 @@ $this->htmlElement('body')->appendAttribute('class', 'likes browse');
             $deleteUrl = $url('admin/like-id', ['action' => 'delete', 'id' => $like->id()]);
             ?>
         <tr>
-            <td><?= $like->id() ?></td>
             <td>
                 <?php if ($resource): ?>
                     <?= $hyperlink($resource->displayTitle(), $resource->adminUrl()) ?>

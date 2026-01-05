@@ -1,12 +1,9 @@
 <?php
 /**
- * Like details for admin sidebar.
+ * Like details for admin sidebar and browse details.
  *
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
- * @var int $totalLikes
- * @var int $totalDislikes
- * @var int $totalVotes
  */
 
 $plugins = $this->getHelperPluginManager();
@@ -17,20 +14,6 @@ $translate = $plugins->get('translate');
 <div class="meta-group">
     <h4><?= $escape($translate('Likes')) ?></h4>
     <div class="value">
-        <div class="like-stats">
-            <span class="stat likes">
-                <span class="fa fa-thumbs-up"></span>
-                <?= (int) $totalLikes ?>
-            </span>
-            /
-            <span class="stat dislikes">
-                <span class="fa fa-thumbs-down"></span>
-                <?= (int) $totalDislikes ?>
-            </span>
-            =
-            <span class="stat total">
-                <?= $escape(sprintf($translate('(%d total votes)'), $totalVotes)) ?>
-            </span>
-        </div>
+        <?= $this->🖒($resource) ?>
     </div>
 </div>

@@ -231,6 +231,13 @@ class Module extends AbstractModule
                 [$this, 'filterSearchFilters']
             );
 
+            // Load assets on browse pages for details panel.
+            $sharedEventManager->attach(
+                $controller,
+                'view.browse.before',
+                [$this, 'addAdminBrowseAssets']
+            );
+
             // Add like details to admin sidebar.
             $sharedEventManager->attach(
                 $controller,
@@ -560,6 +567,20 @@ class Module extends AbstractModule
     }
 
     /**
+     * Load assets on admin browse pages for details panel.
+     */
+    public function addAdminBrowseAssets(Event $event): void
+    {
+        $view = $event->getTarget();
+        $assetUrl = $view->plugin('assetUrl');
+        $view->headLink()
+            ->appendStylesheet($assetUrl('css/🖒.css', '🖒'));
+        $view->headScript()
+            ->appendFile($assetUrl('js/common-dialog.js', 'Common'), 'text/javascript', ['defer' => 'defer'])
+            ->appendFile($assetUrl('js/🖒.js', '🖒'), 'text/javascript', ['defer' => 'defer']);
+    }
+
+    /**
      * Add like stats to admin sidebar.
      */
     public function viewShowSidebarAdmin(Event $event): void
@@ -568,15 +589,8 @@ class Module extends AbstractModule
         $resource = $view->vars()->resource;
 
         if ($this->isLikeEnabledForResource($resource)) {
-            /** @var \🖒\Api\Adapter\LikeAdapter $adapter */
-            $adapter = $this->getServiceLocator()->get('Omeka\ApiAdapterManager')->get('likes');
-            $counts = $adapter->getLikeCounts($resource->id());
-
             echo $view->partial('common/admin/🖒-details', [
                 'resource' => $resource,
-                'totalLikes' => $counts['likes'],
-                'totalDislikes' => $counts['dislikes'],
-                'totalVotes' => $counts['total'],
             ]);
         }
     }
@@ -592,19 +606,8 @@ class Module extends AbstractModule
             return;
         }
 
-        /** @var \🖒\Api\Adapter\LikeAdapter $adapter */
-        $adapter = $this->getServiceLocator()->get('Omeka\ApiAdapterManager')->get('likes');
-        $counts = $adapter->getLikeCounts($representation->id());
-
-        if ($counts['total'] === 0) {
-            return;
-        }
-
         echo $event->getTarget()->partial('common/admin/🖒-details', [
             'resource' => $representation,
-            'totalLikes' => $counts['likes'],
-            'totalDislikes' => $counts['dislikes'],
-            'totalVotes' => $counts['total'],
         ]);
     }
 
