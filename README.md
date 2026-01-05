@@ -213,15 +213,15 @@ Copyright
 This module was designed for [Musée de Bretagne].
 
 
-[🖒]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒
+[🖒]: https://gitlab.com/Daniel-KM/Omeka-S-module-Like
 [Omeka S]: https://omeka.org/s
 [fall of php 6]: https://en.wikipedia.org/wiki/PHP#PHP_6_and_Unicode
 [installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
 [Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
 [Guest]: https://gitlab.com/Daniel-KM/Omeka-S-module-Guest
-[GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒
-[🖒.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒/-/releases
-[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒/-/issues
+[GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-Like
+[🖒.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-Like/-/releases
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-Like/-/issues
 [CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
 [GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
 [FSF]: https://www.fsf.org
