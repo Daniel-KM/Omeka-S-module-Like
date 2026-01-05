@@ -87,6 +87,14 @@ class 🖒 extends AbstractHelper
             $user = $view->identity();
         }
 
+        // Check if anonymous users can view likes (site or global setting).
+        if (!$user) {
+            $allowPublicView = $this->getAllowPublicView();
+            if (!$allowPublicView) {
+                return '';
+            }
+        }
+
         // Merge options with settings.
         $options = $this->getOptions($options);
 
@@ -136,6 +144,20 @@ class 🖒 extends AbstractHelper
     }
 
     /**
+     * Check if anonymous users can view likes.
+     */
+    protected function getAllowPublicView(): bool
+    {
+        if ($this->siteSettings) {
+            $allowPublicView = $this->siteSettings->get('🖒_allow_public_view', '');
+            if ($allowPublicView !== '') {
+                return (bool) $allowPublicView;
+            }
+        }
+        return (bool) $this->settings->get('🖒_allow_public_view', true);
+    }
+
+    /**
      * Merge provided options with settings defaults.
      */
     protected function getOptions(array $options): array
@@ -148,6 +170,7 @@ class 🖒 extends AbstractHelper
             $iconShape = $this->siteSettings->get('🖒_icon_shape', 'heart');
             $allow🖓 = $this->siteSettings->get('🖒_allow_dislike', false);
             $allowChangeVote = $this->siteSettings->get('🖒_allow_change_vote', '');
+            $allowPublicView = $this->siteSettings->get('🖒_allow_public_view', '');
             $defaults = [
                 'showCount🖒' => (bool) ($showCount🖒 === '' ? $this->settings->get('🖒_show_count_like', true) : $showCount🖒),
                 'showCount🖓' => (bool) ($showCount🖓 === '' ? $this->settings->get('🖒_show_count_dislike', true) : $showCount🖓),
@@ -155,6 +178,7 @@ class 🖒 extends AbstractHelper
                 'iconShape' => $iconShape === '' ? $this->settings->get('🖒_icon_shape', 'heart') : $iconShape,
                 'allow🖓' => (bool) ($allow🖓 === '' ? $this->settings->get('🖒_allow_dislike', true) : $allow🖓),
                 'allowChangeVote' => (bool) ($allowChangeVote === '' ? $this->settings->get('🖒_allow_change_vote', true) : $allowChangeVote),
+                'allowPublicView' => (bool) ($allowPublicView === '' ? $this->settings->get('🖒_allow_public_view', true) : $allowPublicView),
                 'template' => 'common/🖒',
             ];
         } else {
@@ -165,6 +189,7 @@ class 🖒 extends AbstractHelper
                 'iconShape' => $this->settings->get('🖒_icon_shape', 'heart'),
                 'allow🖓' => (bool) $this->settings->get('🖒_allow_dislike', true),
                 'allowChangeVote' => (bool) $this->settings->get('🖒_allow_change_vote', true),
+                'allowPublicView' => (bool) $this->settings->get('🖒_allow_public_view', true),
                 'template' => 'common/🖒',
             ];
         }

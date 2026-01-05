@@ -96,10 +96,17 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
         $this->assertFalse($this->fieldset->has('🖒_resources'));
     }
 
-    public function testSiteSettingsDoNotHaveAllowPublicViewElement(): void
+    public function testFieldsetHasAllowPublicViewElement(): void
     {
-        // Allow public view is only in global settings, not site settings.
-        $this->assertFalse($this->fieldset->has('🖒_allow_public_view'));
+        $this->assertTrue($this->fieldset->has('🖒_allow_public_view'));
+        $element = $this->fieldset->get('🖒_allow_public_view');
+        $this->assertEquals('Anonymous visitor can view counts', $element->getLabel());
+
+        $valueOptions = $element->getValueOptions();
+        $this->assertArrayHasKey('', $valueOptions);
+        $this->assertArrayHasKey('1', $valueOptions);
+        $this->assertArrayHasKey('0', $valueOptions);
+        $this->assertEquals('Use global setting', $valueOptions['']);
     }
 
     public function testFieldsetCanBeAttachedToForm(): void
@@ -118,6 +125,8 @@ class SiteSettingsFieldsetTest extends AbstractHttpControllerTestCase
             '🖒_show_count_dislike',
             '🖒_icon_type',
             '🖒_icon_shape',
+            '🖒_allow_change_vote',
+            '🖒_allow_public_view',
         ];
 
         foreach ($elements as $name) {
