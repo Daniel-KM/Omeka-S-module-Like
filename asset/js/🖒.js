@@ -131,7 +131,8 @@
     });
 
     // Expose refresh function globally.
-    window.OmekaModule🖒 = {
+    // FIXME Use of emoji "window.OmekaModule🖒" does not work in js.
+    window.OmekaModuleLike = {
         refresh: refreshLikeStatus,
         updateUI: updateLikeUI
     };
