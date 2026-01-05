@@ -389,15 +389,8 @@ class LikeAdapter extends AbstractEntityAdapter
     {
         $conn = $this->getEntityManager()->getConnection();
 
-        $sql = <<<SQL
-            SELECT
-                SUM(CASE WHEN liked = 1 THEN 1 ELSE 0 END) AS likes,
-                SUM(CASE WHEN liked = 0 THEN 1 ELSE 0 END) AS dislikes,
-                COUNT(*) AS total
-            FROM `like`
-            WHERE resource_id = :resource_id
-        SQL;
-
+        // Use the like_count view for efficient aggregation.
+        $sql = 'SELECT `likes`, `dislikes`, `total` FROM `like_count` WHERE `resource_id` = :resource_id';
         $result = $conn->executeQuery($sql, ['resource_id' => $resourceId])->fetchAssociative();
 
         return [
