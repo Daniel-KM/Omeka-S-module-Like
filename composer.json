@@ -1,0 +1,46 @@
+{
+    "name": "daniel-km/omeka-s-module-like",
+    "description": "Module for Omeka S (👍) that allows authenticated users to ❤ or 🖓 resources.",
+    "type": "library",
+    "license": "CECILL-2.1",
+    "authors": [
+        {
+            "name": "Daniel Berthereau",
+            "email": "Daniel.packagist@Berthereau.net"
+        }
+    ],
+    "homepage": "https://gitlab.com/Daniel-KM/Omeka-S-module-%F0%9F%96%92",
+    "support": {
+        "issues": "https://gitlab.com/Daniel-KM/Omeka-S-module-%F0%9F%96%92/-/issues",
+        "forum": "https://forum.omeka.org/"
+    },
+    "keywords": [
+        "Omeka S",
+        "module",
+        "social",
+        "contribution",
+        "rating"
+    ],
+    "autoload": {
+        "psr-4": {
+            "🖒\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "🖒Test\\": "test/🖒Test/"
+        }
+    },
+    "config": {
+        "platform": {
+            "php": "7.4"
+        },
+        "allow-plugins": {
+            "composer/installers": true,
+            "oomphinc/composer-installers-extender": true
+        }
+    },
+    "extra": {
+        "installer-name" : "🖒"
+    }
+}
