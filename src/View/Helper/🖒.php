@@ -145,11 +145,13 @@ class 🖒 extends AbstractHelper
             $showCount🖒 = $this->siteSettings->get('🖒_show_count_like', true);
             $showCount🖓 = $this->siteSettings->get('🖒_show_count_dislike', false);
             $iconType = $this->siteSettings->get('🖒_icon_type', 'unicode');
+            $iconShape = $this->siteSettings->get('🖒_icon_shape', 'heart');
             $allow🖓 = $this->siteSettings->get('🖒_allow_dislike', false);
             $defaults = [
                 'showCount🖒' => (bool) ($showCount🖒 === '' ? $this->settings->get('🖒_show_count_like', true) : $showCount🖒),
                 'showCount🖓' => (bool) ($showCount🖓 === '' ? $this->settings->get('🖒_show_count_dislike', true) : $showCount🖓),
                 'iconType' => $iconType === '' ? $this->settings->get('🖒_icon_type', 'unicode') : $iconType,
+                'iconShape' => $iconShape === '' ? $this->settings->get('🖒_icon_shape', 'heart') : $iconShape,
                 'allow🖓' => (bool) ($allow🖓 === '' ? $this->settings->get('🖒_allow_dislike', true) : $allow🖓),
                 'template' => 'common/🖒',
             ];
@@ -158,6 +160,7 @@ class 🖒 extends AbstractHelper
                 'showCount🖒' => (bool) $this->settings->get('🖒_show_count_like', true),
                 'showCount🖓' => (bool) $this->settings->get('🖒_show_count_dislike', false),
                 'iconType' => $this->settings->get('🖒_icon_type', 'unicode'),
+                'iconShape' => $this->settings->get('🖒_icon_shape', 'heart'),
                 'allow🖓' => (bool) $this->settings->get('🖒_allow_dislike', true),
                 'template' => 'common/🖒',
             ];

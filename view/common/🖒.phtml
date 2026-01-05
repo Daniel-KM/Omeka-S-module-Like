@@ -17,29 +17,50 @@ $translate = $plugins->get('translate');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 
 $iconType = $options['iconType'] ?? 'unicode';
+$iconShape = $options['iconShape'] ?? 'heart';
 $showCount🖒 = $options['showCount🖒'] ?? true;
 $showCount🖓 = $options['showCount🖓'] ?? false;
 $allow🖓 = $options['allow🖓'] ?? true;
 
-// Unicode characters for thumbs up/down.
-$iconUnicode🖒 = '🖒';
-$iconUnicode🖓 = '🖓';
-
-// Font Awesome classes.
-$iconLikeFa = 'fa-thumbs-up';
-$iconDislikeFa = 'fa-thumbs-down';
+// Icons based on shape.
+if ($iconShape === 'heart') {
+    // Unicode heart characters.
+    $iconUnicodeLike = '❤️';
+    $iconUnicodeDislike = '💔';
+    // Font Awesome classes.
+    $iconLikeFa = 'fa-heart';
+    $iconDislikeFa = 'fa-heart-broken';
+} else {
+    // Unicode thumbs characters.
+    $iconUnicodeLike = '🖒';
+    $iconUnicodeDislike = '🖓';
+    // Font Awesome classes.
+    $iconLikeFa = 'fa-thumbs-up';
+    $iconDislikeFa = 'fa-thumbs-down';
+}
 
 // Determine button states.
 $likeActive = $userLiked === true ? 'active' : '';
 $dislikeActive = $userLiked === false ? 'active' : '';
+
+// Build login message based on icon shape and allow dislike.
+if ($iconShape === 'heart') {
+    $loginMessage = $allow🖓
+        ? $translate('You must be logged in to ❤️ or 💔 resources.')
+        : $translate('You must be logged in to ❤️ resources.');
+} else {
+    $loginMessage = $allow🖓
+        ? $translate('You must be logged in to 🖒 or 🖓 resources.')
+        : $translate('You must be logged in to 🖒 resources.');
+}
 ?>
 
-<div class="like-container" data-resource-id="<?= $resource->id() ?>" data-toggle-url="<?= $escapeAttr($toggleUrl) ?>">
+<div class="like-container" data-resource-id="<?= $resource->id() ?>" data-url-toggle="<?= $escapeAttr($toggleUrl) ?>" data-message-login="<?= $escapeAttr($loginMessage) ?>">
     <button type="button" class="like-button like-action <?= $likeActive ?>" data-action="like" data-liked="true" title="<?= $escapeAttr($translate('Like')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?>>
         <?php if ($iconType === 'fa'): ?>
             <span class="fa <?= $iconLikeFa ?>"></span>
         <?php else: ?>
-            <span class="like-icon"><?= $iconUnicode🖒 ?></span>
+            <span class="like-icon"><?= $iconUnicodeLike ?></span>
         <?php endif; ?>
         <?php if ($showCount🖒): ?>
             <span class="like-count"><?= (int) $counts['likes'] ?></span>
@@ -50,7 +71,7 @@ $dislikeActive = $userLiked === false ? 'active' : '';
         <?php if ($iconType === 'fa'): ?>
             <span class="fa <?= $iconDislikeFa ?>"></span>
         <?php else: ?>
-            <span class="like-icon"><?= $iconUnicode🖓 ?></span>
+            <span class="like-icon"><?= $iconUnicodeDislike ?></span>
         <?php endif; ?>
         <?php if ($showCount🖓): ?>
             <span class="dislike-count"><?= (int) $counts['dislikes'] ?></span>

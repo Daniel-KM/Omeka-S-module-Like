@@ -130,7 +130,7 @@ return [
         ],
     ],
     'js_translate_strings' => [
-        'You must be logged in to 🖒 or 🖓 resources.', // @translate
+        'You must be logged in to 🖒 resources.', // @translate
         'An error occurred.', // @translate
         'An error occurred while processing your request.', // @translate
     ],
@@ -140,10 +140,11 @@ return [
                 'items',
             ],
             // Warning: mysql does not support to use two emojis in a id: 🖒_show_count_🖒 = 🖒_show_count_🖓.
-            '🖒_allow_dislike' => true,
+            '🖒_allow_dislike' => false,
             '🖒_show_count_like' => true,
             '🖒_show_count_dislike' => false,
             '🖒_icon_type' => 'unicode',
+            '🖒_icon_shape' => 'heart',
             '🖒_allow_public_view' => true,
         ],
         'site_settings' => [
@@ -151,6 +152,7 @@ return [
             '🖒_show_count_like' => '',
             '🖒_show_count_dislike' => '',
             '🖒_icon_type' => '',
+            '🖒_icon_shape' => '',
         ],
     ],
 ];

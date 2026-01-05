@@ -12,7 +12,8 @@
 
             // Check if login is required.
             if ($button.data('require-login')) {
-                CommonDialog.dialogAlert(Omeka.jsTranslate('You must be logged in to 🖒 or 🖓 resources.'));
+                var loginMessage = $container.data('message-login') || Omeka.jsTranslate('You must be logged in to 🖒 resources.');
+                CommonDialog.dialogAlert(loginMessage);
                 return;
             }
 
@@ -22,7 +23,7 @@
             }
 
             var resourceId = $container.data('resource-id');
-            var toggleUrl = $container.data('toggle-url');
+            var toggleUrl = $container.data('url-toggle');
             var liked = $button.data('liked');
 
             // If already active, send null to remove the vote.
@@ -46,7 +47,8 @@
                     updateLikeUI($container, response.data);
                 } else if (response.status === 'fail') {
                     if (response.data && response.data.requireLogin) {
-                        CommonDialog.dialogAlert(response.message || Omeka.jsTranslate('You must be logged in to 🖒 or 🖓 resources.'));
+                        var loginMessage = $container.data('message-login') || Omeka.jsTranslate('You must be logged in to 🖒 resources.');
+                        CommonDialog.dialogAlert(response.message || loginMessage);
                     } else {
                         CommonDialog.dialogAlert(response.message || Omeka.jsTranslate('An error occurred.'));
                     }
@@ -95,7 +97,7 @@
         $('.like-container').each(function() {
             var $container = $(this);
             var resourceId = $container.data('resource-id');
-            var toggleUrl = $container.data('toggle-url');
+            var toggleUrl = $container.data('url-toggle');
 
             if (!resourceId || !toggleUrl) {
                 return;

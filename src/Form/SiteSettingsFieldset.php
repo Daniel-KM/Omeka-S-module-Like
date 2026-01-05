@@ -83,6 +83,22 @@ class SiteSettingsFieldset extends Fieldset
                     'id' => '🖒_icon_type',
                 ],
             ])
+            ->add([
+                'name' => '🖒_icon_shape',
+                'type' => CommonElement\OptionalRadio::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Icon shape', // @translate
+                    'value_options' => [
+                        '' => 'Use global setting', // @translate
+                        'heart' => 'Heart', // @translate
+                        'thumb' => 'Thumb up/down', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => '🖒_icon_shape',
+                ],
+            ])
         ;
     }
 }
