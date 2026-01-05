@@ -1,0 +1,119 @@
+/* Like/Dislike */
+
+.like-container {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.like-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.375rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 0.9rem;
+    transition: all 0.2s ease;
+}
+
+.like-button:hover {
+    background: #e5e5e5;
+}
+
+.like-button:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+.like-button.active {
+    background: #007bff;
+    border-color: #007bff;
+    color: #fff;
+}
+
+.like-button.like-action.active {
+    background: #28a745;
+    border-color: #28a745;
+}
+
+.like-button.dislike-action.active {
+    background: #dc3545;
+    border-color: #dc3545;
+}
+
+.like-button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.like-button .fa {
+    font-size: 1rem;
+}
+
+.like-button .like-icon {
+    font-size: 1.1rem;
+}
+
+.like-button .like-count,
+.like-button .dislike-count {
+    font-weight: 600;
+    min-width: 1.5em;
+    text-align: center;
+}
+
+/* Loading state */
+.like-container.loading .like-button {
+    opacity: 0.7;
+    pointer-events: none;
+}
+
+/* Admin styles */
+.like-admin-container {
+    margin: 0.5rem 0;
+}
+
+.like-admin-container .like-button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+/* Browse view column styles */
+.column-like .like-container {
+    justify-content: center;
+}
+
+/* Resource sidebar styles */
+.resource-like-status {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid #eee;
+}
+
+.resource-like-status .like-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.resource-like-status .like-stats .stat {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .like-button {
+        background: #333;
+        border-color: #555;
+        color: #fff;
+    }
+
+    .like-button:hover {
+        background: #444;
+    }
+}

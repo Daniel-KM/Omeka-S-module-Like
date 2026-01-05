@@ -1,0 +1,60 @@
+<?php
+/**
+ * Like/Dislike buttons template.
+ *
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Omeka\Api\Representation\AbstractResourceEntityRepresentation $resource
+ * @var \Omeka\Api\Representation\UserRepresentation|null $user
+ * @var array $options
+ * @var array $counts ('likes', 'dislikes', 'total')
+ * @var bool|null $userLiked (null = not voted, true = liked, false = disliked)
+ * @var string $toggleUrl
+ * @var bool $isLoggedIn
+ */
+
+$plugins = $this->getHelperPluginManager();
+$translate = $plugins->get('translate');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$iconType = $options['iconType'] ?? 'unicode';
+$showCount🖒 = $options['showCount🖒'] ?? true;
+$showCount🖓 = $options['showCount🖓'] ?? false;
+$allow🖓 = $options['allow🖓'] ?? true;
+
+// Unicode characters for thumbs up/down.
+$iconUnicode🖒 = '🖒';
+$iconUnicode🖓 = '🖓';
+
+// Font Awesome classes.
+$iconLikeFa = 'fa-thumbs-up';
+$iconDislikeFa = 'fa-thumbs-down';
+
+// Determine button states.
+$likeActive = $userLiked === true ? 'active' : '';
+$dislikeActive = $userLiked === false ? 'active' : '';
+?>
+
+<div class="like-container" data-resource-id="<?= $resource->id() ?>" data-toggle-url="<?= $escapeAttr($toggleUrl) ?>">
+    <button type="button" class="like-button like-action <?= $likeActive ?>" data-action="like" data-liked="true" title="<?= $escapeAttr($translate('Like')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?>>
+        <?php if ($iconType === 'fa'): ?>
+            <span class="fa <?= $iconLikeFa ?>"></span>
+        <?php else: ?>
+            <span class="like-icon"><?= $iconUnicode🖒 ?></span>
+        <?php endif; ?>
+        <?php if ($showCount🖒): ?>
+            <span class="like-count"><?= (int) $counts['likes'] ?></span>
+        <?php endif; ?>
+    </button>
+    <?php if ($allow🖓): ?>
+    <button type="button" class="like-button dislike-action <?= $dislikeActive ?>" data-action="dislike" data-liked="false" title="<?= $escapeAttr($translate('Dislike')) ?>" <?= !$isLoggedIn ? 'data-require-login="true"' : '' ?>>
+        <?php if ($iconType === 'fa'): ?>
+            <span class="fa <?= $iconDislikeFa ?>"></span>
+        <?php else: ?>
+            <span class="like-icon"><?= $iconUnicode🖓 ?></span>
+        <?php endif; ?>
+        <?php if ($showCount🖓): ?>
+            <span class="dislike-count"><?= (int) $counts['dislikes'] ?></span>
+        <?php endif; ?>
+    </button>
+    <?php endif; ?>
+</div>

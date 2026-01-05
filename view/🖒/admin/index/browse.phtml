@@ -1,0 +1,93 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \🖒\Api\Representation\LikeRepresentation[] $likes
+ * @var array $query
+ */
+
+$plugins = $this->getHelperPluginManager();
+$url = $plugins->get('url');
+$i18n = $plugins->get('i18n');
+$escape = $plugins->get('escapeHtml');
+$translate = $plugins->get('translate');
+$hyperlink = $plugins->get('hyperlink');
+$escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$this->htmlElement('body')->appendAttribute('class', 'likes browse');
+?>
+
+<?= $this->pageTitle($translate('Likes')) ?>
+
+<div class="browse-controls">
+    <?= $p = $this->pagination() ?>
+</div>
+
+<?php $this->trigger('view.browse.before'); ?>
+
+<?php if (count($likes)): ?>
+
+<table class="tablesaw" data-tablesaw-mode="stack">
+    <thead>
+        <tr>
+            <th><?= $translate('ID') ?></th>
+            <th><?= $translate('Resource') ?></th>
+            <th><?= $translate('User') ?></th>
+            <th><?= $translate('Status') ?></th>
+            <th><?= $translate('Created') ?></th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <?php foreach ($likes as $like):
+            // Currently, empty owner and resource are not possible.
+            $owner = $like->owner();
+            $resource = $like->resource();
+            $deleteUrl = $url('admin/like-id', ['action' => 'delete', 'id' => $like->id()]);
+            ?>
+        <tr>
+            <td><?= $like->id() ?></td>
+            <td>
+                <?php if ($resource): ?>
+                    <?= $hyperlink($resource->displayTitle(), $resource->adminUrl()) ?>
+                <?php else: ?>
+                    <em><?= $translate('[Deleted resource]') ?></em>
+                <?php endif; ?>
+            </td>
+            <td>
+                <?php if ($owner): ?>
+                    <?= $hyperlink($owner->name(), $owner->adminUrl()) ?>
+                <?php else: ?>
+                    <em><?= $translate('[Deleted user]') ?></em>
+                <?php endif; ?>
+            </td>
+            <td>
+                <?php if ($like->liked()): ?>
+                    <span class="like-status liked"><span class="fa fa-thumbs-up"></span> <?= $translate('Liked') ?></span>
+                <?php else: ?>
+                    <span class="like-status disliked"><span class="fa fa-thumbs-down"></span> <?= $translate('Disliked') ?></span>
+                <?php endif; ?>
+            </td>
+            <td><?= $i18n->dateFormat($like->created(), 'medium', 'medium') ?></td>
+            <td>
+                <?= $hyperlink('', $deleteUrl, [
+                    'class' => 'o-icon-delete',
+                    'title' => $translate('Delete'),
+                    'data-sidebar-content-url' => $url('admin/like-id', ['action' => 'delete-confirm', 'id' => $like->id()]),
+                ]) ?>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+</table>
+
+<?php else: ?>
+
+<p><?= $translate('No 🖒 found.') ?></p>
+
+<?php endif; ?>
+
+<?php $this->trigger('view.browse.after'); ?>
+
+<div class="browse-controls">
+    <?= $p ?>
+</div>

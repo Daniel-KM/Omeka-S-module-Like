@@ -1,0 +1,170 @@
+# 🖒 (module for Omeka S)
+=========================
+
+> __New versions of this module and support for Omeka S version 3.0 and above
+> are available on [GitLab], which seems to respect users and privacy better
+> than the previous repository.__
+
+[🖒] is a module for [Omeka S] that allows visitors to like or dislike resources
+via a simple click on a button 🖒 or 🖓.
+
+
+Installation
+------------
+
+See general end user documentation for [installing a module].
+
+The module requires the module [Common], version 3.4.74 or later.
+
+* From the zip
+
+Download the last release [🖒.zip] from the list of releases, and
+uncompress it in the `modules` directory.
+
+- From the source and for development
+
+If the module was installed from the source, rename the name of the folder of
+the module to `🖒`, go to the root of the module, and run:
+
+```sh
+composer install --no-dev
+```
+
+- For test
+
+The module includes a test suite with unit and functional tests.
+Run them from the root of Omeka:
+
+```sh
+vendor/bin/phpunit -c modules/🖒/test/phpunit.xml --testdox
+```
+
+
+Quick Start
+-----------
+
+After installation:
+
+1. Configure the module in the admin settings to enable likes on desired
+   resource types (items, item sets, media).
+2. Configure the display options: icon style (Unicode or Font Awesome),
+   show/hide counts.
+3. Add the "🖒: Button" resource page block to your site resource page templates.
+4. Authenticated users can now like/dislike resources.
+
+
+Development / themes
+--------------------
+
+### View Helper
+
+The `🖒()` view helper can be used in themes:
+
+```php
+// Basic usage - uses current resource and user from view
+echo $this->🖒();
+
+// With specific resource
+echo $this->🖒($resource);
+
+// With options
+echo $this->🖒($resource, null, [
+    'showCount🖒' => true,
+    'showCount🖓' => false,
+    // 'unicode' or 'fa'
+    'iconType' => 'unicode',
+    'allow🖓' => true,
+    // Custom template
+    'template' => 'common/🖒',
+]);
+```
+
+### Sort
+
+Resources can be sorted by like counts using API parameters:
+
+- `sort_by=like_count` - Sort by number of likes
+- `sort_by=dislike_count` - Sort by number of dislikes
+- `sort_by=vote_count` - Sort by total votes
+
+
+TODO
+----
+
+- [ ] Add a page for guest
+- [ ] Add like notifications
+- [ ] Add like reports/statistics
+- [ ] Add a way to allow anonymous like (one time only)
+
+
+Warning
+-------
+
+Use it at your own risk.
+
+It’s always recommended to backup your files and your databases and to check
+your archives regularly so you can roll back if needed.
+
+```sh
+# database dump example
+mariadb-dump -u omeka -p omeka | gzip > "omeka.$(date +%Y%m%d_%H%M%S).sql.gz"
+```
+
+
+Troubleshooting
+---------------
+
+See online issues on the [module issues] page on GitLab.
+
+
+License
+-------
+
+This module is published under the [CeCILL v2.1] license, compatible with
+[GNU/GPL] and approved by [FSF] and [OSI].
+
+This software is governed by the CeCILL license under French law and abiding by
+the rules of distribution of free software. You can use, modify and/ or
+redistribute the software under the terms of the CeCILL license as circulated by
+CEA, CNRS and INRIA at the following URL "http://www.cecill.info".
+
+As a counterpart to the access to the source code and rights to copy, modify and
+redistribute granted by the license, users are provided only with a limited
+warranty and the software’s author, the holder of the economic rights, and the
+successive licensors have only limited liability.
+
+In this respect, the user’s attention is drawn to the risks associated with
+loading, using, modifying and/or developing or reproducing the software by the
+user in light of its specific status of free software, that may mean that it is
+complicated to manipulate, and that also therefore means that it is reserved for
+developers and experienced professionals having in-depth computer knowledge.
+Users are therefore encouraged to load and test the software’s suitability as
+regards their requirements in conditions enabling the security of their systems
+and/or data to be ensured and, more generally, to use and operate it in the same
+conditions as regards security.
+
+The fact that you are presently reading this means that you have had knowledge
+of the CeCILL license and that you accept its terms.
+
+Copyright
+---------
+
+- Copyright Daniel Berthereau, 2025 (see [Daniel-KM] on GitLab)
+
+This module was designed for [Musée de Bretagne].
+
+
+[🖒]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒
+[Omeka S]: https://omeka.org/s
+[installing a module]: https://omeka.org/s/docs/user-manual/modules/#installing-modules
+[Common]: https://gitlab.com/Daniel-KM/Omeka-S-module-Common
+[GitLab]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒
+[🖒.zip]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒/-/releases
+[module issues]: https://gitlab.com/Daniel-KM/Omeka-S-module-🖒/-/issues
+[CeCILL v2.1]: https://www.cecill.info/licences/Licence_CeCILL_V2.1-en.html
+[GNU/GPL]: https://www.gnu.org/licenses/gpl-3.0.html
+[FSF]: https://www.fsf.org
+[OSI]: http://opensource.org
+[Musée de Bretagne]: https://collections.musee-bretagne.fr
+[GitLab]: https://gitlab.com/Daniel-KM
+[Daniel-KM]: https://gitlab.com/Daniel-KM "Daniel Berthereau"
