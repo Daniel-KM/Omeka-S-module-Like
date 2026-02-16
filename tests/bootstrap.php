@@ -30,7 +30,7 @@ try {
     // Ignore errors - table might not exist.
 }
 
-require dirname(__DIR__, 3) . '/modules/Common/test/Bootstrap.php';
+require dirname(__DIR__, 3) . '/modules/Common/tests/Bootstrap.php';
 
 \CommonTest\Bootstrap::bootstrap(
     [
