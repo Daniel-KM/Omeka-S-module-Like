@@ -13,14 +13,20 @@
             // Check if login is required.
             if ($button.data('require-login')) {
                 var loginMessage = $container.data('message-login') || Omeka.jsTranslate('You must be logged in to 🖒 resources.');
-                CommonDialog.dialogAlert(loginMessage);
+                CommonDialog.dialogAlert({
+                    heading: Omeka.jsTranslate('Like'),
+                    message: loginMessage,
+                });
                 return;
             }
 
             // Check if vote is locked (user cannot change vote).
             if ($container.data('vote-locked') === true || $container.data('vote-locked') === 'true') {
                 var lockedMessage = $container.data('message-locked') || 'You cannot change your vote.';
-                CommonDialog.dialogAlert(lockedMessage);
+                CommonDialog.dialogAlert({
+                    heading: Omeka.jsTranslate('Like'),
+                    message: lockedMessage,
+                });
                 return;
             }
 
@@ -55,24 +61,39 @@
                 } else if (response.status === 'fail') {
                     if (response.data && response.data.requireLogin) {
                         var loginMessage = $container.data('message-login') || Omeka.jsTranslate('You must be logged in to 🖒 resources.');
-                        CommonDialog.dialogAlert(response.message || loginMessage);
+                        CommonDialog.dialogAlert({
+                            heading: Omeka.jsTranslate('Like'),
+                            message: response.message || loginMessage,
+                        });
                     } else if (response.data && response.data.action === 'denied') {
                         // Vote change was denied - lock the container.
                         $container.data('vote-locked', true);
                         $container.addClass('vote-locked');
                         $container.find('.like-button').prop('disabled', true);
                         var lockedMessage = $container.data('message-locked') || 'You cannot change your vote.';
-                        CommonDialog.dialogAlert(response.message || lockedMessage);
+                        CommonDialog.dialogAlert({
+                            heading: Omeka.jsTranslate('Like'),
+                            message: response.message || lockedMessage,
+                        });
                     } else {
-                        CommonDialog.dialogAlert(response.message || Omeka.jsTranslate('An error occurred.'));
+                        CommonDialog.dialogAlert({
+                            heading: Omeka.jsTranslate('Like'),
+                            message: response.message || Omeka.jsTranslate('An error occurred.'),
+                        });
                     }
                 } else {
-                    CommonDialog.dialogAlert(response.message || Omeka.jsTranslate('An error occurred.'));
+                    CommonDialog.dialogAlert({
+                        heading: Omeka.jsTranslate('Like'),
+                        message: response.message || Omeka.jsTranslate('An error occurred.'),
+                    });
                 }
             })
             .fail(function(xhr, status, error) {
                 console.error('Like toggle failed:', error);
-                CommonDialog.dialogAlert(Omeka.jsTranslate('An error occurred while processing your request.'));
+                CommonDialog.dialogAlert({
+                    heading: Omeka.jsTranslate('Like'),
+                    message: Omeka.jsTranslate('An error occurred while processing your request.'),
+                });
             })
             .always(function() {
                 $container.removeClass('loading');
