@@ -1,5 +1,13 @@
 /* Admin Like/Dislike */
 
+header nav .like::before,
+.like .subhead::before,
+.likes .subhead::before,
+.likes .no-resources::before {
+    content: "\f164"; /* fas fa-thumbs-up */
+}
+
+
 .likes.browse table .like-status {
     display: inline-flex;
     align-items: center;

@@ -13,10 +13,10 @@ $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 
-$this->htmlElement('body')->appendAttribute('class', 'likes browse');
+$this->htmlElement('body')->appendAttribute('class', 'like likes browse');
 ?>
 
-<?= $this->pageTitle($translate('Likes')) ?>
+<?= $this->pageTitle('', 1, $translate('Likes')) ?>
 
 <div class="browse-controls">
     <?= $p = $this->pagination() ?>
