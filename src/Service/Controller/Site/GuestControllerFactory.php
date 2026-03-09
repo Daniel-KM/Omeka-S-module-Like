@@ -8,7 +8,7 @@ use 🖒\Controller\Site\GuestController;
 
 class GuestControllerFactory implements FactoryInterface
 {
-    public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $services, $requestedName, ?array $options = null)
     {
         $likeAdapter = $services->get('Omeka\ApiAdapterManager')->get('likes');
         $settings = $services->get('Omeka\Settings');
