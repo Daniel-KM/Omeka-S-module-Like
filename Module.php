@@ -392,7 +392,10 @@ class Module extends AbstractModule
     }
 
     /**
-     * Handle API search query to filter by like status.
+     * Handle search query filters and sorting for likes.
+     *
+     * Doctrine dql does not support emoji in namespace, so native sql
+     * sub-queries are used instead of dql joins on the `like` entity.
      */
     public function handleApiSearchQuery(Event $event): void
     {
@@ -400,137 +403,124 @@ class Module extends AbstractModule
 
         $qb = $event->getParam('queryBuilder');
         $adapter = $event->getTarget();
+        $conn = $adapter->getEntityManager()->getConnection();
         $expr = $qb->expr();
+
+        // Doctrine DQL does not support emoji in namespace nor
+        // backtick-quoted table names, so pre-fetch resource IDs
+        // via DBAL for filters, and use native SQL function for
+        // sort sub-selects.
 
         // Filter by "has likes".
         if (isset($query['has_likes']) && $query['has_likes'] !== '') {
-            $likeAlias = $adapter->createAlias();
+            $ids = $conn->executeQuery(<<<'SQL'
+                SELECT DISTINCT resource_id FROM `like`
+                WHERE liked = 1
+                SQL
+            )->fetchFirstColumn();
             if ($query['has_likes']) {
-                $qb->innerJoin(
-                    Like::class,
-                    $likeAlias,
-                    'WITH',
-                    $expr->andX(
-                        $expr->eq($likeAlias . '.resource', 'omeka_root.id'),
-                        $expr->eq($likeAlias . '.liked', 1)
-                    )
-                );
+                $ids = $ids ?: [0];
+                $qb->andWhere($expr->in('omeka_root.id', $ids));
             } else {
-                // Resources with no likes.
-                $subQb = $adapter->getEntityManager()->createQueryBuilder();
-                $subQb->select($likeAlias . '.resource')
-                    ->from(Like::class, $likeAlias)
-                    ->where($expr->eq($likeAlias . '.liked', 1));
-
-                $qb->andWhere($expr->notIn('omeka_root.id', $subQb->getDQL()));
-            }
-        }
-
-        // Filter by user's like status.
-        if (!empty($query['like_status'])) {
-            $user = $this->getServiceLocator()->get('Omeka\AuthenticationService')->getIdentity();
-            if ($user) {
-                $likeAlias = $adapter->createAlias();
-                switch ($query['like_status']) {
-                    case 'liked':
-                        $qb->innerJoin(
-                            Like::class,
-                            $likeAlias,
-                            'WITH',
-                            $expr->andX(
-                                $expr->eq($likeAlias . '.resource', 'omeka_root.id'),
-                                $expr->eq($likeAlias . '.owner', $user->getId()),
-                                $expr->eq($likeAlias . '.liked', 1)
-                            )
-                        );
-                        break;
-                    case 'disliked':
-                        $qb->innerJoin(
-                            Like::class,
-                            $likeAlias,
-                            'WITH',
-                            $expr->andX(
-                                $expr->eq($likeAlias . '.resource', 'omeka_root.id'),
-                                $expr->eq($likeAlias . '.owner', $user->getId()),
-                                $expr->eq($likeAlias . '.liked', 0)
-                            )
-                        );
-                        break;
-                    case 'voted':
-                        $qb->innerJoin(
-                            Like::class,
-                            $likeAlias,
-                            'WITH',
-                            $expr->andX(
-                                $expr->eq($likeAlias . '.resource', 'omeka_root.id'),
-                                $expr->eq($likeAlias . '.owner', $user->getId())
-                            )
-                        );
-                        break;
-                    case 'not_voted':
-                        $subQb = $adapter->getEntityManager()->createQueryBuilder();
-                        $subQb->select($likeAlias . '.resource')
-                            ->from(Like::class, $likeAlias)
-                            ->where($expr->eq($likeAlias . '.owner', $user->getId()));
-
-                        $qb->andWhere($expr->notIn('omeka_root.id', $subQb->getDQL()));
-                        break;
+                if ($ids) {
+                    $qb->andWhere(
+                        $expr->notIn('omeka_root.id', $ids)
+                    );
                 }
             }
         }
 
-        // Sort by like count.
-        if (!empty($query['sort_by']) && $query['sort_by'] === '🖒_count') {
-            $likeAlias = $adapter->createAlias();
-            $qb->leftJoin(
-                Like::class,
-                $likeAlias,
-                'WITH',
-                $expr->andX(
-                    $expr->eq($likeAlias . '.resource', 'omeka_root.id'),
-                    $expr->eq($likeAlias . '.liked', 1)
-                )
-            );
-            $qb->addSelect('COUNT(' . $likeAlias . '.id) AS HIDDEN likeCount');
-            $qb->addGroupBy('omeka_root.id');
-
-            $sortOrder = isset($query['sort_order']) && strtoupper($query['sort_order']) === 'DESC' ? 'DESC' : 'ASC';
-            $qb->addOrderBy('likeCount', $sortOrder);
+        // Filter by user like status.
+        if (!empty($query['like_status'])) {
+            $user = $this->getServiceLocator()
+                ->get('Omeka\AuthenticationService')
+                ->getIdentity();
+            if ($user) {
+                $userId = (int) $user->getId();
+                $sql = null;
+                $negate = false;
+                switch ($query['like_status']) {
+                    case 'liked':
+                        $sql = 'SELECT resource_id FROM `like` WHERE owner_id = ? AND liked = 1';
+                        break;
+                    case 'disliked':
+                        $sql = 'SELECT resource_id FROM `like` WHERE owner_id = ? AND liked = 0';
+                        break;
+                    case 'voted':
+                        $sql = 'SELECT resource_id FROM `like` WHERE owner_id = ?';
+                        break;
+                    case 'not_voted':
+                        $sql = 'SELECT resource_id FROM `like` WHERE owner_id = ?';
+                        $negate = true;
+                        break;
+                }
+                if ($sql) {
+                    $ids = $conn->executeQuery($sql, [$userId])
+                        ->fetchFirstColumn();
+                    if ($negate) {
+                        if ($ids) {
+                            $qb->andWhere(
+                                $expr->notIn('omeka_root.id', $ids)
+                            );
+                        }
+                    } else {
+                        $ids = $ids ?: [0];
+                        $qb->andWhere(
+                            $expr->in('omeka_root.id', $ids)
+                        );
+                    }
+                }
+            }
         }
 
-        // Sort by dislike count.
-        if (!empty($query['sort_by']) && $query['sort_by'] === 'dislike_count') {
-            $likeAlias = $adapter->createAlias();
-            $qb->leftJoin(
-                Like::class,
-                $likeAlias,
-                'WITH',
-                $expr->andX(
-                    $expr->eq($likeAlias . '.resource', 'omeka_root.id'),
-                    $expr->eq($likeAlias . '.liked', 0)
-                )
-            );
-            $qb->addSelect('COUNT(' . $likeAlias . '.id) AS HIDDEN dislikeCount');
-            $qb->addGroupBy('omeka_root.id');
-
-            $sortOrder = isset($query['sort_order']) && strtoupper($query['sort_order']) === 'DESC' ? 'DESC' : 'ASC';
-            $qb->addOrderBy('dislikeCount', $sortOrder);
+        // Sort by like/dislike/vote count.
+        // Use a left join on the like table via native SQL
+        // function registered by Doctrine.
+        $sortBy = $query['sort_by'] ?? '';
+        $sortLikeFilter = null;
+        $sortAlias = null;
+        if ($sortBy === '🖒_count') {
+            $sortLikeFilter = 1;
+            $sortAlias = 'likeCount';
+        } elseif ($sortBy === 'dislike_count') {
+            $sortLikeFilter = 0;
+            $sortAlias = 'dislikeCount';
+        } elseif ($sortBy === 'vote_count') {
+            $sortLikeFilter = null;
+            $sortAlias = 'voteCount';
         }
-
-        // Sort by total vote count.
-        if (!empty($query['sort_by']) && $query['sort_by'] === 'vote_count') {
-            $likeAlias = $adapter->createAlias();
-            $qb->leftJoin(
-                Like::class,
-                $likeAlias,
-                'WITH',
-                $expr->eq($likeAlias . '.resource', 'omeka_root.id')
-            );
-            $qb->addSelect('COUNT(' . $likeAlias . '.id) AS HIDDEN voteCount');
-            $qb->addGroupBy('omeka_root.id');
-
-            $sortOrder = isset($query['sort_order']) && strtoupper($query['sort_order']) === 'DESC' ? 'DESC' : 'ASC';
-            $qb->addOrderBy('voteCount', $sortOrder);
+        if ($sortAlias) {
+            // Pre-fetch counts per resource via DBAL.
+            $countSql = 'SELECT resource_id, COUNT(id) AS cnt FROM `like`';
+            if ($sortLikeFilter !== null) {
+                $countSql .= ' WHERE liked = ' . (int) $sortLikeFilter;
+            }
+            $countSql .= ' GROUP BY resource_id';
+            $counts = $conn->executeQuery($countSql)
+                ->fetchAllKeyValue();
+            // Store for post-processing sort since DQL cannot
+            // join on a native table with reserved keyword.
+            // Instead, use a DQL-compatible approach: add the
+            // count as a CASE expression matching known IDs.
+            $sortOrder = isset($query['sort_order'])
+                && strtoupper($query['sort_order']) === 'DESC'
+                ? 'DESC' : 'ASC';
+            if ($counts) {
+                // Build a CASE WHEN for each resource with
+                // likes (max ~1000 resources with likes).
+                $cases = [];
+                foreach ($counts as $resId => $cnt) {
+                    $cases[] = 'WHEN omeka_root.id = '
+                        . (int) $resId . ' THEN ' . (int) $cnt;
+                }
+                $caseExpr = 'CASE ' . implode(' ', $cases)
+                    . ' ELSE 0 END';
+                $qb->addSelect($caseExpr . ' AS HIDDEN '
+                    . $sortAlias);
+            } else {
+                $qb->addSelect('0 AS HIDDEN ' . $sortAlias);
+            }
+            $qb->addOrderBy($sortAlias, $sortOrder);
         }
     }
 
