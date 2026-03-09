@@ -46,6 +46,6 @@ if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActi
     throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $translate('Missing requirement. Unable to upgrade.')); // @translate
 }
 
-if (version_compare($oldVersion, '3.4.1', '<')) {
+if (version_compare($oldVersion, '3.4.2', '<')) {
     $connection->executeStatement('DROP VIEW IF EXISTS `like_count`');
 }

@@ -52,15 +52,19 @@ class Module extends AbstractModule
                 $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
                 'Common', '3.4.81'
             );
-            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+            $errors[] = (string) $message;
         }
 
-        if (!$this->checkModuleActiveVersion('Guest', '3.4.11')) {
+        if (!$this->checkModuleActiveVersion('Guest', '3.4.42')) {
             $message = new \Omeka\Stdlib\Message(
                 $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
-                'Guest', '3.4.11'
+                'Guest', '3.4.42'
             );
-            throw new \Omeka\Module\Exception\ModuleCannotInstallException((string) $message);
+            $errors[] = (string) $message;
+        }
+
+        if ($errors) {
+            throw new \Omeka\Module\Exception\ModuleCannotInstallException(implode("\n", $errors));
         }
     }
 
