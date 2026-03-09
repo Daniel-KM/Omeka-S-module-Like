@@ -11,32 +11,29 @@ $escape = $plugins->get('escapeHtml');
 $translate = $plugins->get('translate');
 
 $likeStatus = $query['like_status'] ?? '';
+$hasLikes = $query['has_likes'] ?? '';
 ?>
 
 <div class="field">
     <div class="field-meta">
-        <label for="like-status"><?= $escape($translate('Like status')) ?></label>
+        <span class="label"><?= $escape($translate('Has likes')) ?></span>
     </div>
     <div class="inputs">
-        <select name="like_status" id="like-status">
-            <option value=""><?= $escape($translate('All')) ?></option>
-            <option value="liked" <?= $likeStatus === 'liked' ? 'selected' : '' ?>><?= $escape($translate('Liked by me')) ?></option>
-            <option value="disliked" <?= $likeStatus === 'disliked' ? 'selected' : '' ?>><?= $escape($translate('Disliked by me')) ?></option>
-            <option value="voted" <?= $likeStatus === 'voted' ? 'selected' : '' ?>><?= $escape($translate('Voted by me')) ?></option>
-            <option value="not_voted" <?= $likeStatus === 'not_voted' ? 'selected' : '' ?>><?= $escape($translate('Not voted by me')) ?></option>
-        </select>
+        <label class="type-radio"><input type="radio" name="has_likes" value=""<?= $hasLikes === '' ? ' checked' : '' ?>> <?= $escape($translate('All')) ?></label>
+        <label class="type-radio"><input type="radio" name="has_likes" value="1"<?= $hasLikes === '1' ? ' checked' : '' ?>> <?= $escape($translate('Yes')) ?></label>
+        <label class="type-radio"><input type="radio" name="has_likes" value="0"<?= $hasLikes === '0' ? ' checked' : '' ?>> <?= $escape($translate('No')) ?></label>
     </div>
 </div>
 
 <div class="field">
     <div class="field-meta">
-        <label for="has-likes"><?= $escape($translate('Has likes')) ?></label>
+        <span class="label"><?= $escape($translate('Like status')) ?></span>
     </div>
     <div class="inputs">
-        <select name="has_likes" id="has-likes">
-            <option value=""><?= $escape($translate('All')) ?></option>
-            <option value="1" <?= isset($query['has_likes']) && $query['has_likes'] ? 'selected' : '' ?>><?= $escape($translate('Yes')) ?></option>
-            <option value="0" <?= isset($query['has_likes']) && $query['has_likes'] === '0' ? 'selected' : '' ?>><?= $escape($translate('No')) ?></option>
-        </select>
+        <label class="type-radio"><input type="radio" name="like_status" value=""<?= $likeStatus === '' ? ' checked' : '' ?>> <?= $escape($translate('All')) ?></label>
+        <label class="type-radio"><input type="radio" name="like_status" value="liked"<?= $likeStatus === 'liked' ? ' checked' : '' ?>> <?= $escape($translate('Liked by me')) ?></label>
+        <label class="type-radio"><input type="radio" name="like_status" value="disliked"<?= $likeStatus === 'disliked' ? ' checked' : '' ?>> <?= $escape($translate('Disliked by me')) ?></label>
+        <label class="type-radio"><input type="radio" name="like_status" value="voted"<?= $likeStatus === 'voted' ? ' checked' : '' ?>> <?= $escape($translate('Voted by me')) ?></label>
+        <label class="type-radio"><input type="radio" name="like_status" value="not_voted"<?= $likeStatus === 'not_voted' ? ' checked' : '' ?>> <?= $escape($translate('Not voted by me')) ?></label>
     </div>
 </div>
