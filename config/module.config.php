@@ -186,6 +186,7 @@ return [
             '🖒_icon_type' => '',
             '🖒_icon_shape' => '',
             '🖒_allow_change_vote' => '',
+            '🖒_allow_public_view' => '',
             '🖒_guest_widget_label' => '',
             '🖒_guest_link_label' => '',
             '🖒_guest_page_title' => '',
