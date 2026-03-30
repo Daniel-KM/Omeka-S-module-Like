@@ -574,8 +574,19 @@ class Module extends AbstractModule
      */
     public function viewShowAfterResourcePublic(Event $event): void
     {
+        $services = $this->getServiceLocator();
+        $currentTheme = $services->get('Omeka\Site\ThemeManager')->getCurrentTheme();
+        if (method_exists($currentTheme, 'isConfigurableResourcePageBlocks') && $currentTheme->isConfigurableResourcePageBlocks()) {
+            return;
+        }
         $view = $event->getTarget();
         $resource = $view->vars()->resource;
+
+        $placements = $services->get('Omeka\Settings\Site')->get('🖒_placement', []);
+        $key = 'after/' . $resource->resourceName();
+        if (!in_array($key, $placements)) {
+            return;
+        }
 
         if ($this->isLikeEnabledForResource($resource)) {
             echo '<div id="like-section" class="like-section">';

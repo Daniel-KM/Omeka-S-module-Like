@@ -11,6 +11,7 @@ class SiteSettingsFieldset extends Fieldset
 
     protected $elementGroups = [
         '🖒' => '👍',
+        'themes_old' => 'Old themes', // @translate
     ];
 
     public function init(): void
@@ -173,6 +174,24 @@ class SiteSettingsFieldset extends Fieldset
                 'attributes' => [
                     'id' => '🖒_guest_page_title',
                     'placeholder' => 'My Likes', // @translate
+                ],
+            ])
+
+            ->add([
+                'name' => '🖒_placement',
+                'type' => CommonElement\OptionalMultiCheckbox::class,
+                'options' => [
+                    'element_group' => 'themes_old',
+                    'label' => 'Like (old themes)', // @translate
+                    'value_options' => [
+                        'after/items' => 'Item show', // @translate
+                        'after/media' => 'Media show', // @translate
+                        'after/item_sets' => 'Item set show', // @translate
+                    ],
+                ],
+                'attributes' => [
+                    'id' => '🖒_placement',
+                    'required' => false,
                 ],
             ])
         ;

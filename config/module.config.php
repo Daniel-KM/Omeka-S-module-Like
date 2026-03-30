@@ -180,6 +180,7 @@ return [
             '🖒_allow_public_view' => true,
         ],
         'site_settings' => [
+            '🖒_placement' => [],
             '🖒_allow_dislike' => '',
             '🖒_show_count_like' => '',
             '🖒_show_count_dislike' => '',
