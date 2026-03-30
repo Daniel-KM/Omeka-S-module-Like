@@ -93,7 +93,7 @@ class IndexController extends AbstractActionController
                 'dislikes' => $counts['dislikes'],
                 'total' => $counts['total'],
             ]);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return $this->jSend()->error(null, new PsrMessage('An error occurred while processing your request.')); // @translate
         }
     }

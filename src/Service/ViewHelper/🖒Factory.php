@@ -18,7 +18,7 @@ class 🖒Factory implements FactoryInterface
         if ($status->isSiteRequest()) {
             try {
                 $siteSettings = $services->get('Omeka\Settings\Site');
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Site settings not available.
             }
         }

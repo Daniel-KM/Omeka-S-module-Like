@@ -701,7 +701,7 @@ class Module extends AbstractModule
         if ($resourceName) {
             try {
                 $api->update($resourceName, $resource->getId(), [], [], ['isPartial' => true, 'flushEntityManager' => false]);
-            } catch (\Exception $e) {
+            } catch (\Throwable $e) {
                 // Ignore errors.
             }
         }
