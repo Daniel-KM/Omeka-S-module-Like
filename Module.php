@@ -43,7 +43,7 @@ class Module extends AbstractModule
     protected function preInstall(): void
     {
         $services = $this->getServiceLocator();
-        $translate = $services->get('ControllerPluginManager')->get('translate');
+        $translator = $services->get('MvcTranslator');
 
         $errors = [];
 
@@ -57,7 +57,7 @@ class Module extends AbstractModule
 
         if (!$this->checkModuleActiveVersion('Guest', '3.4.42')) {
             $message = new \Omeka\Stdlib\Message(
-                $translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
+                $translator->translate('The module %1$s should be upgraded to version %2$s or later.'), // @translate
                 'Guest', '3.4.42'
             );
             $errors[] = (string) $message;

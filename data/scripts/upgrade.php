@@ -49,3 +49,11 @@ if (!method_exists($this, 'checkModuleActiveVersion') || !$this->checkModuleActi
 if (version_compare($oldVersion, '3.4.2', '<')) {
     $connection->executeStatement('DROP VIEW IF EXISTS `like_count`');
 }
+
+if (version_compare($oldVersion, '3.4.3', '<')) {
+    $siteIds = $api->search('sites', [], ['returnScalar' => 'id'])->getContent();
+    foreach ($siteIds as $siteId) {
+        $siteSettings->setTargetId($siteId);
+        $siteSettings->set('🖒_placement', ['after/items', 'after/media', 'after/item_sets']);
+    }
+}
