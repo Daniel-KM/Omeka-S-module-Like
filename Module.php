@@ -335,6 +335,11 @@ class Module extends AbstractModule
 
         // Batch edit integration.
         $sharedEventManager->attach(
+            '*',
+            'view.batch_edit.before',
+            [$this, 'addBatchEditHeaders']
+        );
+        $sharedEventManager->attach(
             \Omeka\Form\ResourceBatchUpdateForm::class,
             'form.add_elements',
             [$this, 'handleResourceBatchUpdateFormElements']
@@ -707,6 +712,13 @@ class Module extends AbstractModule
         }
     }
 
+    public function addBatchEditHeaders(Event $event): void
+    {
+        $view = $event->getTarget();
+        $view->headScript()
+            ->appendFile($view->assetUrl('js/🖒-batch-edit.js', '🖒'), 'text/javascript', ['defer' => 'defer']);
+    }
+
     /**
      * Add batch update form elements.
      */
@@ -715,18 +727,17 @@ class Module extends AbstractModule
         $form = $event->getTarget();
 
         $form->add([
-            'name' => '🖒_action',
-            'type' => \Laminas\Form\Element\Select::class,
+            'name' => '🖒_reset',
+            'type' => \Common\Form\Element\OptionalCheckbox::class,
             'options' => [
-                'label' => 'Likes', // @translate
-                'value_options' => [
-                    '' => '[No change]', // @translate
-                    'reset' => 'Reset all likes', // @translate
-                ],
+                'label' => 'Reset all votes (like/dislike)', // @translate
+                'use_hidden_element' => false,
             ],
             'attributes' => [
-                'id' => 'like-action',
-                'class' => 'chosen-select',
+                'id' => '🖒-reset',
+                // This attribute is required to make "batch edit all"
+                // working.
+                'data-collection-action' => 'replace',
             ],
         ]);
     }
@@ -736,24 +747,22 @@ class Module extends AbstractModule
      */
     public function handleResourceBatchUpdatePreprocess(Event $event): void
     {
-        $data = $event->getParam('data');
+        /** @var \Omeka\Api\Request $request */
+        $request = $event->getParam('request');
 
-        if (empty($data['🖒_action'])) {
+        if (empty($request->getValue('🖒_reset'))) {
             return;
         }
 
-        if ($data['🖒_action'] === 'reset') {
-            $request = $event->getParam('request');
-            $ids = (array) $request->getIds();
+        $ids = (array) $request->getIds();
 
-            $services = $this->getServiceLocator();
-            $api = $services->get('Omeka\ApiManager');
+        $services = $this->getServiceLocator();
+        $api = $services->get('Omeka\ApiManager');
 
-            foreach ($ids as $id) {
-                $likes = $api->search('likes', ['resource_id' => $id])->getContent();
-                foreach ($likes as $like) {
-                    $api->delete('likes', $like->id());
-                }
+        foreach ($ids as $id) {
+            $likes = $api->search('likes', ['resource_id' => $id])->getContent();
+            foreach ($likes as $like) {
+                $api->delete('likes', $like->id());
             }
         }
     }
