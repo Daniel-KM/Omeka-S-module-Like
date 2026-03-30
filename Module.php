@@ -755,16 +755,18 @@ class Module extends AbstractModule
         }
 
         $ids = (array) $request->getIds();
+        if (!$ids) {
+            return;
+        }
 
         $services = $this->getServiceLocator();
-        $api = $services->get('Omeka\ApiManager');
-
-        foreach ($ids as $id) {
-            $likes = $api->search('likes', ['resource_id' => $id])->getContent();
-            foreach ($likes as $like) {
-                $api->delete('likes', $like->id());
-            }
-        }
+        /** @var \Doctrine\DBAL\Connection $connection */
+        $connection = $services->get('Omeka\Connection');
+        $connection->executeStatement(
+            'DELETE FROM `like` WHERE `resource_id` IN (:ids)',
+            ['ids' => $ids],
+            ['ids' => \Doctrine\DBAL\Connection::PARAM_INT_ARRAY]
+        );
     }
 
     /**
