@@ -2,6 +2,8 @@
 
 namespace 🖒\Stdlib;
 
+use Laminas\Http\Header\SetCookie;
+
 /**
  * Helper to identify anonymous voters via a persistent cookie token.
  *
@@ -39,5 +41,25 @@ final class Anonymous
     public static function identity(string $token): string
     {
         return hash('sha256', $token);
+    }
+
+    /**
+     * Build the anonymous cookie. Use an empty value with a past expiry to
+     * delete it.
+     */
+    public static function cookie(string $value, int $expires, string $path, bool $secure): SetCookie
+    {
+        return new SetCookie(
+            self::COOKIE_NAME,
+            $value,
+            $expires,
+            $path,
+            null,
+            $secure,
+            true,
+            null,
+            null,
+            'Lax'
+        );
     }
 }

@@ -3,7 +3,6 @@
 namespace 🖒\Controller\Site;
 
 use Common\Stdlib\PsrMessage;
-use Laminas\Http\Header\SetCookie;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Omeka\Settings\Settings;
 use Omeka\Settings\SiteSettings;
@@ -164,17 +163,11 @@ class IndexController extends AbstractActionController
     protected function addAnonymousCookie(string $token): void
     {
         $request = $this->getRequest();
-        $cookie = new SetCookie(
-            Anonymous::COOKIE_NAME,
+        $cookie = Anonymous::cookie(
             $token,
             time() + Anonymous::COOKIE_LIFETIME,
             $request->getBaseUrl() . '/',
-            null,
-            $request->getUri()->getScheme() === 'https',
-            true,
-            null,
-            null,
-            'Lax'
+            $request->getUri()->getScheme() === 'https'
         );
         $this->getResponse()->getHeaders()->addHeader($cookie);
     }

@@ -14,6 +14,7 @@ use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
 use 🖒\Entity\Like;
+use 🖒\Stdlib\Anonymous;
 use Omeka\Api\Representation\AbstractResourceEntityRepresentation;
 use Omeka\Api\Representation\ItemRepresentation;
 use Omeka\Api\Representation\ItemSetRepresentation;
@@ -38,6 +39,13 @@ class Module extends AbstractModule
     {
         parent::onBootstrap($event);
         $this->addAclRules();
+
+        // Claim anonymous votes once the visitor authenticates.
+        $event->getApplication()->getEventManager()->attach(
+            MvcEvent::EVENT_DISPATCH,
+            [$this, 'handleClaimAnonymousLikes'],
+            10
+        );
     }
 
     protected function preInstall(): void
@@ -78,6 +86,40 @@ class Module extends AbstractModule
         if ($searchFields !== null && !in_array('common/advanced-search/🖒', $searchFields)) {
             $searchFields[] = 'common/advanced-search/🖒';
             $settings->set('advancedsearch_search_fields', $searchFields);
+        }
+    }
+
+    /**
+     * Migrate anonymous votes to the user once this one is authenticated.
+     *
+     * Runs once per logged-in session: the anonymous cookie is removed after
+     * the claim, so subsequent requests short-circuit on the missing cookie.
+     */
+    public function handleClaimAnonymousLikes(MvcEvent $event): void
+    {
+        $token = Anonymous::token();
+        if (!$token) {
+            return;
+        }
+
+        $services = $this->getServiceLocator();
+        $user = $services->get('Omeka\AuthenticationService')->getIdentity();
+        if (!$user) {
+            return;
+        }
+
+        /** @var \🖒\Api\Adapter\LikeAdapter $adapter */
+        $adapter = $services->get('Omeka\ApiAdapterManager')->get('likes');
+        $adapter->claimAnonymousLikes($user->getId(), Anonymous::identity($token));
+
+        // The anonymous cookie is no longer needed once logged in: delete it so
+        // the claim runs only once.
+        $response = $event->getResponse();
+        if ($response instanceof \Laminas\Http\Response) {
+            $request = $event->getRequest();
+            $path = method_exists($request, 'getBaseUrl') ? $request->getBaseUrl() . '/' : '/';
+            $secure = method_exists($request, 'getUri') && $request->getUri()->getScheme() === 'https';
+            $response->getHeaders()->addHeader(Anonymous::cookie('', 1, $path, $secure));
         }
     }
 

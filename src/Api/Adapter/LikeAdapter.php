@@ -448,6 +448,47 @@ class LikeAdapter extends AbstractEntityAdapter
     }
 
     /**
+     * Attach anonymous votes to a user when this one authenticates.
+     *
+     * For each anonymous like matching the cookie identity: transfer it to the
+     * user if this one has not voted on the resource yet, else drop the
+     * anonymous duplicate (the authenticated vote wins). This avoids double
+     * votes across the anonymous/authenticated transition and lets votes cast
+     * before login follow the user.
+     */
+    public function claimAnonymousLikes(int $userId, string $identity): void
+    {
+        $entityManager = $this->getEntityManager();
+        $repository = $entityManager->getRepository(Like::class);
+
+        $anonymousLikes = $repository->findBy(['identity' => $identity]);
+        if (!$anonymousLikes) {
+            return;
+        }
+
+        $user = $entityManager->find(\Omeka\Entity\User::class, $userId);
+        if (!$user) {
+            return;
+        }
+
+        foreach ($anonymousLikes as $like) {
+            $existing = $repository->findOneBy([
+                'resource' => $like->getResource()->getId(),
+                'owner' => $userId,
+            ]);
+            if ($existing) {
+                $entityManager->remove($like);
+            } else {
+                $like
+                    ->setOwner($user)
+                    ->setIdentity(null);
+            }
+        }
+
+        $entityManager->flush();
+    }
+
+    /**
      * Toggle or set a like/dislike for a user on a resource.
      *
      * @param int $resourceId
