@@ -38,7 +38,7 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
     </thead>
     <tbody>
         <?php foreach ($likes as $like):
-            // Currently, empty owner and resource are not possible.
+            // A vote belongs either to a user or to an anonymous visitor.
             $owner = $like->owner();
             $resource = $like->resource();
             $deleteUrl = $url('admin/like-id', ['action' => 'delete', 'id' => $like->id()]);
@@ -54,6 +54,8 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
             <td>
                 <?php if ($owner): ?>
                     <?= $hyperlink($owner->name(), $owner->adminUrl()) ?>
+                <?php elseif ($like->isAnonymous()): ?>
+                    <em><?= $translate('Anonymous') ?></em>
                 <?php else: ?>
                     <em><?= $translate('[Deleted user]') ?></em>
                 <?php endif; ?>

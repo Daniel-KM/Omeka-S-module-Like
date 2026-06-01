@@ -124,6 +124,17 @@ class SettingsFieldset extends Fieldset
                     'id' => '🖒_allow_public_view',
                 ],
             ])
+            ->add([
+                'name' => '🖒_allow_anonymous',
+                'type' => Element\Checkbox::class,
+                'options' => [
+                    'element_group' => '🖒',
+                    'label' => 'Anonymous visitor can vote', // @translate
+                ],
+                'attributes' => [
+                    'id' => '🖒_allow_anonymous',
+                ],
+            ])
         ;
     }
 }

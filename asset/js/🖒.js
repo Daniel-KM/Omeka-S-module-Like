@@ -152,7 +152,7 @@
                     updateLikeUI($container, response.data);
 
                     // Update login requirement state.
-                    if (!response.data.isLoggedIn) {
+                    if (!response.data.canVote) {
                         $container.find('.like-button').attr('data-require-login', 'true');
                     } else {
                         $container.find('.like-button').removeAttr('data-require-login');

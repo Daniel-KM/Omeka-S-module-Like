@@ -178,6 +178,7 @@ return [
             '🖒_icon_shape' => 'heart',
             '🖒_allow_change_vote' => true,
             '🖒_allow_public_view' => true,
+            '🖒_allow_anonymous' => false,
         ],
         'site_settings' => [
             '🖒_placement' => [],
@@ -188,6 +189,7 @@ return [
             '🖒_icon_shape' => '',
             '🖒_allow_change_vote' => '',
             '🖒_allow_public_view' => '',
+            '🖒_allow_anonymous' => '',
             '🖒_guest_widget_label' => '',
             '🖒_guest_link_label' => '',
             '🖒_guest_page_title' => '',

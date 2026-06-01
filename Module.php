@@ -109,6 +109,15 @@ class Module extends AbstractModule
                 );
         }
 
+        // Anonymous visitors can reach the toggle/status endpoints; the
+        // controller enforces whether anonymous voting is actually allowed,
+        // honoring the per-site setting override.
+        $acl->allow(
+            null,
+            [Controller\Site\IndexController::class],
+            ['toggle', 'status']
+        );
+
         // Authenticated users can create, update, delete their own likes.
         $acl
             ->allow(

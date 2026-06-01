@@ -3,10 +3,12 @@
 namespace 🖒\Controller\Site;
 
 use Common\Stdlib\PsrMessage;
+use Laminas\Http\Header\SetCookie;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Omeka\Settings\Settings;
 use Omeka\Settings\SiteSettings;
 use 🖒\Api\Adapter\LikeAdapter;
+use 🖒\Stdlib\Anonymous;
 
 class IndexController extends AbstractActionController
 {
@@ -46,7 +48,8 @@ class IndexController extends AbstractActionController
         }
 
         $user = $this->identity();
-        if (!$user) {
+        $allowAnonymous = $this->getMergedSetting('🖒_allow_anonymous', false);
+        if (!$user && !$allowAnonymous) {
             return $this->jSend()->fail(
                 ['requireLogin' => true],
                 new PsrMessage('You must be logged in to like or dislike resources.') // @translate
@@ -68,14 +71,19 @@ class IndexController extends AbstractActionController
         }
 
         // Check if changing vote is allowed.
-        $allowChangeVote = $this->siteSettings->get('🖒_allow_change_vote', '');
-        if ($allowChangeVote === '') {
-            $allowChangeVote = $this->settings->get('🖒_allow_change_vote', true);
-        }
-        $allowChangeVote = (bool) $allowChangeVote;
+        $allowChangeVote = (bool) $this->getMergedSetting('🖒_allow_change_vote', true);
 
         try {
-            $result = $this->likeAdapter->toggleLike($resourceId, $user->getId(), $liked, $allowChangeVote);
+            if ($user) {
+                $result = $this->likeAdapter->toggleLike($resourceId, $user->getId(), $liked, $allowChangeVote);
+            } else {
+                $token = Anonymous::token();
+                if (!$token) {
+                    $token = Anonymous::generateToken();
+                    $this->addAnonymousCookie($token);
+                }
+                $result = $this->likeAdapter->toggleLikeAnonymous($resourceId, Anonymous::identity($token), $liked, $allowChangeVote);
+            }
 
             if ($result['action'] === 'denied') {
                 return $this->jSend()->fail(
@@ -115,9 +123,15 @@ class IndexController extends AbstractActionController
         $counts = $this->likeAdapter->getLikeCounts($resourceId);
 
         $user = $this->identity();
-        $userLiked = $user
-            ? $this->likeAdapter->getUserLikeStatus($resourceId, $user->getId())
-            : null;
+        $allowAnonymous = $this->getMergedSetting('🖒_allow_anonymous', false);
+        if ($user) {
+            $userLiked = $this->likeAdapter->getUserLikeStatus($resourceId, $user->getId());
+        } else {
+            $token = Anonymous::token();
+            $userLiked = $token
+                ? $this->likeAdapter->getAnonymousLikeStatus($resourceId, Anonymous::identity($token))
+                : null;
+        }
 
         return $this->jSend()->success([
             'liked' => $userLiked,
@@ -125,6 +139,43 @@ class IndexController extends AbstractActionController
             'dislikes' => $counts['dislikes'],
             'total' => $counts['total'],
             'isLoggedIn' => (bool) $user,
+            'canVote' => (bool) $user || $allowAnonymous,
         ]);
+    }
+
+    /**
+     * Get a setting using the site value if set, else the global value.
+     *
+     * @param mixed $globalDefault
+     * @return mixed
+     */
+    protected function getMergedSetting(string $name, $globalDefault)
+    {
+        $value = $this->siteSettings->get($name, '');
+        if ($value === '') {
+            $value = $this->settings->get($name, $globalDefault);
+        }
+        return $value;
+    }
+
+    /**
+     * Add a long-lived cookie storing the anonymous token to the response.
+     */
+    protected function addAnonymousCookie(string $token): void
+    {
+        $request = $this->getRequest();
+        $cookie = new SetCookie(
+            Anonymous::COOKIE_NAME,
+            $token,
+            time() + Anonymous::COOKIE_LIFETIME,
+            $request->getBaseUrl() . '/',
+            null,
+            $request->getUri()->getScheme() === 'https',
+            true,
+            null,
+            null,
+            'Lax'
+        );
+        $this->getResponse()->getHeaders()->addHeader($cookie);
     }
 }

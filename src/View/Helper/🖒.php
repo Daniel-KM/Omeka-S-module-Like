@@ -8,6 +8,7 @@ use Omeka\Api\Representation\UserRepresentation;
 use Omeka\Settings\Settings;
 use Omeka\Settings\SiteSettings;
 use 🖒\Api\Adapter\LikeAdapter;
+use 🖒\Stdlib\Anonymous;
 
 /**
  * View helper to display like/dislike buttons for a resource.
@@ -87,29 +88,28 @@ class 🖒 extends AbstractHelper
             $user = $view->identity();
         }
 
-        // Check if anonymous users can view likes (site or global setting).
-        if (!$user) {
-            $allowPublicView = $this->getAllowPublicView();
-            if (!$allowPublicView) {
-                return '';
-            }
-        }
-
         // Merge options with settings.
         $options = $this->getOptions($options);
+
+        // An anonymous visitor needs to be able to view or to vote.
+        if (!$user && !$options['allowPublicView'] && !$options['allowAnonymous']) {
+            return '';
+        }
 
         // Get current like status and counts.
         $resourceId = $resource->id();
         $counts = $this->likeAdapter->getLikeCounts($resourceId);
 
-        // Get user id (User identity() or UserRepresentation).
-        $userId = null;
+        // Get the current like status for the user or the anonymous visitor.
         if ($user) {
             $userId = method_exists($user, 'id') ? $user->id() : $user->getId();
+            $userLiked = $this->likeAdapter->getUserLikeStatus($resourceId, $userId);
+        } else {
+            $token = Anonymous::token();
+            $userLiked = $token
+                ? $this->likeAdapter->getAnonymousLikeStatus($resourceId, Anonymous::identity($token))
+                : null;
         }
-        $userLiked = $userId
-            ? $this->likeAdapter->getUserLikeStatus($resourceId, $userId)
-            : null;
 
         // Determine the url for the toggle action.
         $toggleUrl = $this->getToggleUrl($view);
@@ -122,6 +122,7 @@ class 🖒 extends AbstractHelper
             'userLiked' => $userLiked,
             'toggleUrl' => $toggleUrl,
             'isLoggedIn' => (bool) $user,
+            'canVote' => (bool) $user || $options['allowAnonymous'],
         ]);
     }
 
@@ -144,20 +145,6 @@ class 🖒 extends AbstractHelper
     }
 
     /**
-     * Check if anonymous users can view likes.
-     */
-    protected function getAllowPublicView(): bool
-    {
-        if ($this->siteSettings) {
-            $allowPublicView = $this->siteSettings->get('🖒_allow_public_view', '');
-            if ($allowPublicView !== '') {
-                return (bool) $allowPublicView;
-            }
-        }
-        return (bool) $this->settings->get('🖒_allow_public_view', true);
-    }
-
-    /**
      * Merge provided options with settings defaults.
      */
     protected function getOptions(array $options): array
@@ -171,6 +158,7 @@ class 🖒 extends AbstractHelper
             $allow🖓 = $this->siteSettings->get('🖒_allow_dislike', false);
             $allowChangeVote = $this->siteSettings->get('🖒_allow_change_vote', '');
             $allowPublicView = $this->siteSettings->get('🖒_allow_public_view', '');
+            $allowAnonymous = $this->siteSettings->get('🖒_allow_anonymous', '');
             $defaults = [
                 'showCount🖒' => (bool) ($showCount🖒 === '' ? $this->settings->get('🖒_show_count_like', true) : $showCount🖒),
                 'showCount🖓' => (bool) ($showCount🖓 === '' ? $this->settings->get('🖒_show_count_dislike', true) : $showCount🖓),
@@ -179,6 +167,7 @@ class 🖒 extends AbstractHelper
                 'allow🖓' => (bool) ($allow🖓 === '' ? $this->settings->get('🖒_allow_dislike', true) : $allow🖓),
                 'allowChangeVote' => (bool) ($allowChangeVote === '' ? $this->settings->get('🖒_allow_change_vote', true) : $allowChangeVote),
                 'allowPublicView' => (bool) ($allowPublicView === '' ? $this->settings->get('🖒_allow_public_view', true) : $allowPublicView),
+                'allowAnonymous' => (bool) ($allowAnonymous === '' ? $this->settings->get('🖒_allow_anonymous', false) : $allowAnonymous),
                 'template' => 'common/🖒',
             ];
         } else {
@@ -190,6 +179,7 @@ class 🖒 extends AbstractHelper
                 'allow🖓' => (bool) $this->settings->get('🖒_allow_dislike', true),
                 'allowChangeVote' => (bool) $this->settings->get('🖒_allow_change_vote', true),
                 'allowPublicView' => (bool) $this->settings->get('🖒_allow_public_view', true),
+                'allowAnonymous' => (bool) $this->settings->get('🖒_allow_anonymous', false),
                 'template' => 'common/🖒',
             ];
         }
