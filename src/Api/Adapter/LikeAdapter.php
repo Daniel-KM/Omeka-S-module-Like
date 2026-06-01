@@ -163,6 +163,7 @@ class LikeAdapter extends AbstractEntityAdapter
                 'items' => 'Omeka\\Entity\\Item',
                 'item_sets' => 'Omeka\\Entity\\ItemSet',
                 'media' => 'Omeka\\Entity\\Media',
+                'digital_objects' => 'DigitalObject\\Entity\\DigitalObject',
             ];
 
             $types = [];
