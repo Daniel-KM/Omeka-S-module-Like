@@ -55,7 +55,8 @@ class 🖒 extends AbstractHelper
      * Render like/dislike buttons.
      *
      * @param \Omeka\Api\Representation\AbstractEntityRepresentation|null $resource
-     *     Any resource or any representation with id(), like Selection.
+     *     A core resource (item, item set, media, digital object). Only real
+     *     resources are supported for now.
      * @param UserRepresentation|null $user
      * @param array $options Available options:
      *   - showCount🖒: bool (default from settings)

@@ -198,7 +198,7 @@ class SiteSettingsFieldset extends Fieldset
                 'type' => CommonElement\OptionalMultiCheckbox::class,
                 'options' => [
                     'element_group' => 'themes_old',
-                    'label' => 'Like (old themes)', // @translate
+                    'label' => 'Like', // @translate
                     'value_options' => [
                         'after/items' => 'Item show', // @translate
                         'after/media' => 'Media show', // @translate
