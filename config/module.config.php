@@ -31,6 +31,7 @@ return [
     ],
     'form_elements' => [
         'invokables' => [
+            Form\QuickSearchForm::class => Form\QuickSearchForm::class,
             Form\SettingsFieldset::class => Form\SettingsFieldset::class,
             Form\SiteSettingsFieldset::class => Form\SiteSettingsFieldset::class,
         ],

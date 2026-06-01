@@ -3,15 +3,22 @@
  * @var \Laminas\View\Renderer\PhpRenderer $this
  * @var \🖒\Api\Representation\LikeRepresentation[] $likes
  * @var array $query
+ * @var \🖒\Form\QuickSearchForm $formSearch
  */
 
 $plugins = $this->getHelperPluginManager();
 $url = $plugins->get('url');
 $i18n = $plugins->get('i18n');
 $escape = $plugins->get('escapeHtml');
+$assetUrl = $plugins->get('assetUrl');
 $translate = $plugins->get('translate');
 $hyperlink = $plugins->get('hyperlink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
+
+$this->headLink()
+    ->appendStylesheet($assetUrl('css/common-quick-search.css', 'Common'));
+$this->headScript()
+    ->appendFile($assetUrl('js/common-quick-search.js', 'Common'), 'text/javascript', ['defer' => 'defer']);
 
 $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
 ?>
@@ -20,6 +27,7 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
 
 <div class="browse-controls">
     <?= $p = $this->pagination() ?>
+    <button type="button" class="button search quick-search"><?= $escape($translate('Quick filter')) ?></button>
 </div>
 
 <?php $this->trigger('view.browse.before'); ?>
@@ -91,3 +99,8 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
 <div class="browse-controls">
     <?= $p ?>
 </div>
+
+<?= $this->partial('common/quick-search-sidebar', [
+    'formSearch' => $formSearch,
+    'title' => $translate('Filter likes'),
+]) ?>

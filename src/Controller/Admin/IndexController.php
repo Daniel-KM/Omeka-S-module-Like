@@ -7,6 +7,7 @@ use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Settings\Settings;
 use 🖒\Api\Adapter\LikeAdapter;
+use 🖒\Form\QuickSearchForm;
 
 class IndexController extends AbstractActionController
 {
@@ -38,11 +39,16 @@ class IndexController extends AbstractActionController
         $response = $this->api()->search('likes', $query);
         $this->paginator($response->getTotalResults());
 
+        $formSearch = $this->getForm(QuickSearchForm::class);
+        $formSearch->setAttribute('action', $this->url()->fromRoute(null, ['action' => 'browse'], true));
+        $formSearch->setData($query);
+
         $likes = $response->getContent();
 
         return new ViewModel([
             'likes' => $likes,
             'query' => $query,
+            'formSearch' => $formSearch,
         ]);
     }
 
