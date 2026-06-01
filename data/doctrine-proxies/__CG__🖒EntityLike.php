@@ -67,10 +67,10 @@ class Like extends \🖒\Entity\Like implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', 'id', 'owner', 'resource', 'liked', 'created', 'modified'];
+            return ['__isInitialized__', 'id', 'owner', 'identity', 'resource', 'liked', 'created', 'modified'];
         }
 
-        return ['__isInitialized__', 'id', 'owner', 'resource', 'liked', 'created', 'modified'];
+        return ['__isInitialized__', 'id', 'owner', 'identity', 'resource', 'liked', 'created', 'modified'];
     }
 
     /**
@@ -195,7 +195,7 @@ class Like extends \🖒\Entity\Like implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function setOwner(\Omeka\Entity\User $owner): \🖒\Entity\Like
+    public function setOwner(?\Omeka\Entity\User $owner): \🖒\Entity\Like
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setOwner', [$owner]);
@@ -206,12 +206,34 @@ class Like extends \🖒\Entity\Like implements \Doctrine\ORM\Proxy\Proxy
     /**
      * {@inheritDoc}
      */
-    public function getOwner(): \Omeka\Entity\User
+    public function getOwner(): ?\Omeka\Entity\User
     {
 
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'getOwner', []);
 
         return parent::getOwner();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setIdentity(?string $identity): \🖒\Entity\Like
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setIdentity', [$identity]);
+
+        return parent::setIdentity($identity);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getIdentity(): ?string
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getIdentity', []);
+
+        return parent::getIdentity();
     }
 
     /**

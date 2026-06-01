@@ -28,6 +28,7 @@ class LikeRepresentation extends AbstractEntityRepresentation
         return [
             'o:id' => $this->id(),
             'o:owner' => $owner ? $owner->getReference() : null,
+            'o-module-🖒:identity' => $this->identity(),
             'o:resource' => $resource ? $resource->getReference() : null,
             'o-module-🖒:liked' => $this->liked(),
             'o:created' => $this->getDateTime($this->created()),
@@ -41,6 +42,22 @@ class LikeRepresentation extends AbstractEntityRepresentation
         return $owner
             ? $this->getAdapter('users')->getRepresentation($owner)
             : null;
+    }
+
+    /**
+     * Get the anonymous identity hash, if this is an anonymous vote.
+     */
+    public function identity(): ?string
+    {
+        return $this->resource->getIdentity();
+    }
+
+    /**
+     * Whether this vote was cast by an anonymous visitor.
+     */
+    public function isAnonymous(): bool
+    {
+        return !$this->resource->getOwner();
     }
 
     public function resource(): ?AbstractResourceEntityRepresentation

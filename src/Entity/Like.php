@@ -15,12 +15,18 @@ use Omeka\Entity\User;
  * - Row with liked=true: User liked;
  * - Row with liked=false: User disliked.
  *
+ * A vote belongs either to an authenticated user (owner) or to an anonymous
+ * visitor identified by a cookie-based identity. Exactly one of them is set.
+ *
  * @Entity
  * @Table(
  *     name="`like`",
  *     uniqueConstraints={
  *         @UniqueConstraint(
  *             columns={"owner_id", "resource_id"}
+ *         ),
+ *         @UniqueConstraint(
+ *             columns={"identity", "resource_id"}
  *         )
  *     },
  *     indexes={
@@ -44,18 +50,29 @@ class Like extends AbstractEntity
     protected $id;
 
     /**
-     * @var User
+     * @var User|null
      *
      * @ManyToOne(
      *     targetEntity="Omeka\Entity\User",
      *     fetch="LAZY"
      * )
      * @JoinColumn(
-     *     nullable=false,
+     *     nullable=true,
      *     onDelete="CASCADE"
      * )
      */
     protected $owner;
+
+    /**
+     * @var string|null
+     *
+     * @Column(
+     *     type="string",
+     *     length=64,
+     *     nullable=true
+     * )
+     */
+    protected $identity;
 
     /**
      * @var Resource
@@ -106,15 +123,26 @@ class Like extends AbstractEntity
         return $this->id;
     }
 
-    public function setOwner(User $owner): self
+    public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
         return $this;
     }
 
-    public function getOwner(): User
+    public function getOwner(): ?User
     {
         return $this->owner;
+    }
+
+    public function setIdentity(?string $identity): self
+    {
+        $this->identity = $identity;
+        return $this;
+    }
+
+    public function getIdentity(): ?string
+    {
+        return $this->identity;
     }
 
     public function setResource(Resource $resource): self

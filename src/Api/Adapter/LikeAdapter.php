@@ -327,9 +327,14 @@ class LikeAdapter extends AbstractEntityAdapter
         $data = $request->getContent();
 
         if ($this->shouldHydrate($request, 'o:owner')) {
-            $owner = $this->getAdapter('users')
-                ->findEntity($data['o:owner']['o:id'] ?? $data['o:owner'] ?? null);
-            $entity->setOwner($owner);
+            $ownerId = $data['o:owner']['o:id'] ?? $data['o:owner'] ?? null;
+            $entity->setOwner($ownerId
+                ? $this->getAdapter('users')->findEntity($ownerId)
+                : null);
+        }
+
+        if ($this->shouldHydrate($request, 'o-module-🖒:identity')) {
+            $entity->setIdentity($data['o-module-🖒:identity'] ?? null);
         }
 
         if ($this->shouldHydrate($request, 'o:resource')) {
@@ -353,9 +358,9 @@ class LikeAdapter extends AbstractEntityAdapter
     {
         /** @var \🖒\Entity\Like $entity */
 
-        // Owner is required.
-        if (!$entity->getOwner()) {
-            $errorStore->addError('o:owner', 'A like must have an owner.'); // @translate
+        // A vote belongs either to an owner or to an anonymous identity.
+        if (!$entity->getOwner() && !$entity->getIdentity()) {
+            $errorStore->addError('o:owner', 'A like must have an owner or an anonymous identity.'); // @translate
         }
 
         // Resource is required.
@@ -363,12 +368,14 @@ class LikeAdapter extends AbstractEntityAdapter
             $errorStore->addError('o:resource', 'A like must have a resource.'); // @translate
         }
 
-        // Check uniqueness (owner + resource combination).
-        if ($entity->getOwner() && $entity->getResource()) {
-            $criteria = [
-                'owner' => $entity->getOwner(),
-                'resource' => $entity->getResource(),
-            ];
+        // Check uniqueness (owner or identity + resource combination).
+        if ($entity->getResource() && ($entity->getOwner() || $entity->getIdentity())) {
+            $criteria = ['resource' => $entity->getResource()];
+            if ($entity->getOwner()) {
+                $criteria['owner'] = $entity->getOwner();
+            } else {
+                $criteria['identity'] = $entity->getIdentity();
+            }
 
             $existingLike = $this->getEntityManager()
                 ->getRepository(Like::class)
@@ -424,6 +431,23 @@ class LikeAdapter extends AbstractEntityAdapter
     }
 
     /**
+     * Get the anonymous visitor's like status for a resource.
+     *
+     * @return bool|null null = not voted, true = liked, false = disliked
+     */
+    public function getAnonymousLikeStatus(int $resourceId, string $identity): ?bool
+    {
+        $like = $this->getEntityManager()
+            ->getRepository(Like::class)
+            ->findOneBy([
+                'resource' => $resourceId,
+                'identity' => $identity,
+            ]);
+
+        return $like ? $like->isLiked() : null;
+    }
+
+    /**
      * Toggle or set a like/dislike for a user on a resource.
      *
      * @param int $resourceId
@@ -434,15 +458,37 @@ class LikeAdapter extends AbstractEntityAdapter
      */
     public function toggleLike(int $resourceId, int $userId, ?bool $liked, bool $allowChangeVote = true): array
     {
+        return $this->toggle($resourceId, ['owner' => $userId], $liked, $allowChangeVote);
+    }
+
+    /**
+     * Toggle or set a like/dislike for an anonymous visitor on a resource.
+     *
+     * @param int $resourceId
+     * @param string $identity Cookie-based anonymous identity.
+     * @param bool|null $liked null to remove, true/false to set
+     * @param bool $allowChangeVote whether changing/removing vote is allowed
+     * @return array with 'action' (created, updated, deleted, denied) and 'liked' status
+     */
+    public function toggleLikeAnonymous(int $resourceId, string $identity, ?bool $liked, bool $allowChangeVote = true): array
+    {
+        return $this->toggle($resourceId, ['identity' => $identity], $liked, $allowChangeVote);
+    }
+
+    /**
+     * Toggle or set a like/dislike for an owner or an anonymous identity.
+     *
+     * @param array $criteria Either ['owner' => int] or ['identity' => string].
+     * @return array with 'action' (created, updated, deleted, denied) and 'liked' status
+     */
+    protected function toggle(int $resourceId, array $criteria, ?bool $liked, bool $allowChangeVote): array
+    {
         $entityManager = $this->getEntityManager();
         $repository = $entityManager->getRepository(Like::class);
 
-        $existingLike = $repository->findOneBy([
-            'resource' => $resourceId,
-            'owner' => $userId,
-        ]);
+        $existingLike = $repository->findOneBy(['resource' => $resourceId] + $criteria);
 
-        // If user already voted and changing vote is not allowed, deny the action.
+        // If already voted and changing vote is not allowed, deny the action.
         if ($existingLike && !$allowChangeVote) {
             return ['action' => 'denied', 'liked' => $existingLike->isLiked()];
         }
@@ -466,20 +512,27 @@ class LikeAdapter extends AbstractEntityAdapter
         }
 
         // Create new like.
-        $user = $entityManager->find(\Omeka\Entity\User::class, $userId);
         $resource = $entityManager->find(\Omeka\Entity\Resource::class, $resourceId);
-
-        if (!$user || !$resource) {
+        if (!$resource) {
             return ['action' => 'error', 'liked' => null];
         }
 
         $like = new Like();
         $like
-            ->setOwner($user)
             ->setResource($resource)
             ->setLiked($liked)
             ->setCreated(new DateTime('now'))
         ;
+
+        if (isset($criteria['owner'])) {
+            $user = $entityManager->find(\Omeka\Entity\User::class, $criteria['owner']);
+            if (!$user) {
+                return ['action' => 'error', 'liked' => null];
+            }
+            $like->setOwner($user);
+        } else {
+            $like->setIdentity($criteria['identity']);
+        }
 
         $entityManager->persist($like);
         $entityManager->flush();

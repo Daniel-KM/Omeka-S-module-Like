@@ -1,6 +1,7 @@
 CREATE TABLE `like` (
     `id` INT AUTO_INCREMENT NOT NULL,
-    `owner_id` INT NOT NULL,
+    `owner_id` INT DEFAULT NULL,
+    `identity` VARCHAR(64) DEFAULT NULL,
     `resource_id` INT NOT NULL,
     `liked` TINYINT(1) NOT NULL,
     `created` DATETIME NOT NULL,
@@ -9,6 +10,7 @@ CREATE TABLE `like` (
     INDEX `IDX_AC6340B389329D25` (`resource_id`),
     INDEX `IDX_AC6340B3CA19CBBA89329D25` (`liked`, `resource_id`),
     UNIQUE INDEX `UNIQ_AC6340B37E3C61F989329D25` (`owner_id`, `resource_id`),
+    UNIQUE INDEX `UNIQ_AC6340B3772E836A89329D25` (`identity`, `resource_id`),
     PRIMARY KEY(`id`)
 ) DEFAULT CHARACTER SET `utf8mb4` COLLATE `utf8mb4_unicode_ci` ENGINE = `InnoDB`;
 
