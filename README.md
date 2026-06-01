@@ -84,9 +84,21 @@ After installation:
    - Icon type: Unicode (emoji) or Font Awesome
    - Allow dislike: disabled by default
    - Allow users to change their vote: enabled by default
+   - Allow anonymous visitors to vote: disabled by default
    - Show/hide like and dislike counts
 3. Add the "🖒: Button" resource page block to your site resource page templates.
 4. Authenticated users can now like (and optionally dislike) resources.
+
+Anonymous voting can be enabled globally or per site. To avoid double votes, a
+long-lived cookie storing a random token identifies the anonymous visitor and a
+unique constraint prevents a second vote on the same resource. This is a
+best-effort deduplication: it can be bypassed by clearing cookies or switching
+browser.
+
+When an anonymous visitor later authenticates, the votes cast with that cookie
+are claimed: each one is transferred to the account, or dropped if the user
+already voted on the resource. So votes follow the user at login and are not
+counted twice across the anonymous/authenticated transition.
 
 
 Development / themes
@@ -153,7 +165,13 @@ TODO
 
 - [ ] Add like notifications
 - [ ] Add like reports/statistics
-- [ ] Add a way to allow anonymous like (one time only)
+- [x] Add a way to allow anonymous like (one time only)
+- [ ] Extend likes to entities with a separate id space (Selection, etc.):
+      the `like` table indexes `resource_id` without an entity-type column and
+      references `resource(id)`, so a `Selection #45` and an `Item #45` would
+      collide on the same counter. Add an `entity_name` discriminator column
+      (composite index/unique on `entity_name` + `resource_id`) and drop the
+      strict foreign key to `resource` before enabling non-resource likes.
 
 
 Warning
