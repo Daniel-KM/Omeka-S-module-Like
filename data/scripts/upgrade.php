@@ -57,3 +57,27 @@ if (version_compare($oldVersion, '3.4.3', '<')) {
         $siteSettings->set('🖒_placement', ['after/items', 'after/media', 'after/item_sets']);
     }
 }
+
+if (version_compare($oldVersion, '3.4.4', '<')) {
+    // Idempotent migration: the schema may already be partially applied.
+    $schemaManager = $connection->getSchemaManager();
+    $columns = $schemaManager->listTableColumns('like');
+    $indexes = $schemaManager->listTableIndexes('like');
+
+    $connection->executeStatement('ALTER TABLE `like` MODIFY `owner_id` INT DEFAULT NULL');
+
+    if (!isset($columns['identity'])) {
+        $connection->executeStatement('ALTER TABLE `like` ADD `identity` VARCHAR(64) DEFAULT NULL AFTER `owner_id`');
+    }
+
+    if (!isset($indexes['uniq_ac6340b3772e836a89329d25'])) {
+        $connection->executeStatement('ALTER TABLE `like` ADD UNIQUE INDEX `UNIQ_AC6340B3772E836A89329D25` (`identity`, `resource_id`)');
+    }
+
+    $settings->set('🖒_allow_anonymous', false);
+
+    $message = new PsrMessage(
+        'A new option allows anonymous visitors to vote. Double votes are prevented per browser via a cookie, so this best-effort deduplication can be bypassed by clearing cookies. The option is disabled by default and can be enabled globally or per site.' // @translate
+    );
+    $messenger->addSuccess($message);
+}
