@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-01-05 00:00+0000\n"
+"POT-Creation-Date: 2026-06-01 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,79 +17,95 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: data/scripts/upgrade.php:42 Module.php:48 Module.php:56
+#: data/scripts/upgrade.php:42 Module.php:60 Module.php:68
 #, php-format
 msgid "The module %1$s should be upgraded to version %2$s or later."
 msgstr ""
 
-#: Module.php:555 view/common/advanced-search/🖒.phtml:18
+#: data/scripts/upgrade.php:46
+msgid "Missing requirement. Unable to upgrade."
+msgstr ""
+
+#: Module.php:609 view/common/advanced-search/🖒.phtml:30
 msgid "Like status"
 msgstr ""
 
-#: Module.php:557 view/common/advanced-search/🖒.phtml:23
+#: Module.php:611 view/common/advanced-search/🖒.phtml:34
 msgid "Liked by me"
 msgstr ""
 
-#: Module.php:558 view/common/advanced-search/🖒.phtml:24
+#: Module.php:612 view/common/advanced-search/🖒.phtml:35
 msgid "Disliked by me"
 msgstr ""
 
-#: Module.php:559 view/common/advanced-search/🖒.phtml:25
+#: Module.php:613 view/common/advanced-search/🖒.phtml:36
 msgid "Voted by me"
 msgstr ""
 
-#: Module.php:560 view/common/advanced-search/🖒.phtml:26
+#: Module.php:614 view/common/advanced-search/🖒.phtml:37
 msgid "Not voted by me"
 msgstr ""
 
-#: Module.php:566 view/common/advanced-search/🖒.phtml:33
+#: Module.php:620 view/common/advanced-search/🖒.phtml:19
 msgid "Has likes"
 msgstr ""
 
-#: Module.php:790 view/🖒/admin/index/browse.phtml:19
+#: Module.php:861 view/🖒/admin/index/browse.phtml:26
 #: view/common/admin/🖒-details.phtml:15
 msgid "Likes"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:51
+#: view/🖒/admin/index/browse.phtml:30
+msgid "Quick filter"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:59
 msgid "[Deleted resource]"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:58
+#: view/🖒/admin/index/browse.phtml:66
+msgid "Anonymous"
+msgstr ""
+
+#: view/🖒/admin/index/browse.phtml:68
 msgid "[Deleted user]"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:63
+#: view/🖒/admin/index/browse.phtml:73
 msgid "Liked"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:65
+#: view/🖒/admin/index/browse.phtml:75
 msgid "Disliked"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:83
+#: view/🖒/admin/index/browse.phtml:93
 msgid "No ❤️ found."
 msgstr ""
 
-#: view/common/🖒.phtml:71
+#: view/🖒/admin/index/browse.phtml:105
+msgid "Filter likes"
+msgstr ""
+
+#: view/common/🖒.phtml:72
 #, php-format
 msgid "You must be logged in to %1$s or %2$s resources."
 msgstr ""
 
-#: view/common/🖒.phtml:74
+#: view/common/🖒.phtml:75
 #, php-format
 msgid "You must be logged in to %s resources."
 msgstr ""
 
-#: view/common/🖒.phtml:80
+#: view/common/🖒.phtml:81
 msgid "You cannot change your vote."
 msgstr ""
 
-#: view/common/🖒.phtml:84
+#: view/common/🖒.phtml:85
 msgid "Like"
 msgstr ""
 
-#: view/common/🖒.phtml:95
+#: view/common/🖒.phtml:96
 msgid "Dislike"
 msgstr ""
 
@@ -116,114 +132,154 @@ msgstr ""
 msgid "My likes (%d)"
 msgstr ""
 
-#: Module.php:644
+#: data/scripts/upgrade.php:80
+msgid ""
+"A new option allows anonymous visitors to vote. Double votes are prevented "
+"per browser via a cookie, so this best-effort deduplication can be bypassed "
+"by clearing cookies. The option is disabled by default and can be enabled "
+"globally or per site."
+msgstr ""
+
+#: Module.php:709
 msgid "🖒 status"
 msgstr ""
 
-#: Module.php:665
+#: Module.php:730
 msgid "Like count (module 🖒)"
 msgstr ""
 
-#: Module.php:715
-msgid "Reset all likes"
+#: Module.php:784
+msgid "Reset all votes (like/dislike)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:27 src/Form/SettingsFieldset.php:44
+#: src/Form/SiteSettingsFieldset.php:14
+msgid "Old themes"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:28 src/Form/SettingsFieldset.php:45
 msgid "Allow 👎"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:43 src/Form/SettingsFieldset.php:55
+#: src/Form/SiteSettingsFieldset.php:44 src/Form/SettingsFieldset.php:56
 msgid "Show count of ❤️"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:59 src/Form/SettingsFieldset.php:66
+#: src/Form/SiteSettingsFieldset.php:60 src/Form/SettingsFieldset.php:67
 msgid "Show count of 👎"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:75 src/Form/SettingsFieldset.php:77
+#: src/Form/SiteSettingsFieldset.php:76 src/Form/SettingsFieldset.php:78
 msgid "Icon style"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:78 src/Form/SettingsFieldset.php:79
+#: src/Form/SiteSettingsFieldset.php:79 src/Form/SettingsFieldset.php:80
 msgid "Unicode (emoji)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:79 src/Form/SettingsFieldset.php:80
+#: src/Form/SiteSettingsFieldset.php:80 src/Form/SettingsFieldset.php:81
 msgid "Font Awesome"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:91 src/Form/SettingsFieldset.php:92
+#: src/Form/SiteSettingsFieldset.php:92 src/Form/SettingsFieldset.php:93
 msgid "Icon shape"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:94 src/Form/SettingsFieldset.php:94
+#: src/Form/SiteSettingsFieldset.php:95 src/Form/SettingsFieldset.php:95
 msgid "Heart (❤️/💔)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:95 src/Form/SettingsFieldset.php:95
+#: src/Form/SiteSettingsFieldset.php:96 src/Form/SettingsFieldset.php:96
 msgid "Thumb (👍/👎)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:96 src/Form/SettingsFieldset.php:96
+#: src/Form/SiteSettingsFieldset.php:97 src/Form/SettingsFieldset.php:97
 msgid "Reversed thumb (🖒/🖓)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:97 src/Form/SettingsFieldset.php:97
+#: src/Form/SiteSettingsFieldset.php:98 src/Form/SettingsFieldset.php:98
 msgid "Thumb / Reversed (👍/🖓)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:98 src/Form/SettingsFieldset.php:98
+#: src/Form/SiteSettingsFieldset.php:99 src/Form/SettingsFieldset.php:99
 msgid "Reversed / Thumb (🖒/👎)"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:110 src/Form/SettingsFieldset.php:110
+#: src/Form/SiteSettingsFieldset.php:111 src/Form/SettingsFieldset.php:111
 msgid "Allow users to change their vote"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:126 src/Form/SettingsFieldset.php:121
+#: src/Form/SiteSettingsFieldset.php:127 src/Form/SettingsFieldset.php:122
 msgid "Anonymous visitor can view counts"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:144
+#: src/Form/SiteSettingsFieldset.php:143 src/Form/SettingsFieldset.php:133
+msgid "Anonymous visitor can vote"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:161
 msgid "Guest widget label"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:145
+#: src/Form/SiteSettingsFieldset.php:162
 msgid "Label shown in the guest dashboard widget. Default: \"Likes\"."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:157
+#: src/Form/SiteSettingsFieldset.php:174
 msgid "Guest link label"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:158
+#: src/Form/SiteSettingsFieldset.php:175
 #, php-format
 msgid ""
 "Label for the link in the guest widget. Use %d for the count. Default: \"My "
 "likes (%d)\"."
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:170
+#: src/Form/SiteSettingsFieldset.php:187
 msgid "Guest page title"
 msgstr ""
 
-#: src/Form/SiteSettingsFieldset.php:171
+#: src/Form/SiteSettingsFieldset.php:188
 msgid "Title of the guest likes page. Default: \"My Likes\"."
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:203
+msgid "Item show"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:204
+msgid "Media show"
+msgstr ""
+
+#: src/Form/SiteSettingsFieldset.php:205
+msgid "Item set show"
 msgstr ""
 
 #: src/Form/SettingsFieldset.php:28
 msgid "Resources to enable likes on"
 msgstr ""
 
-#: src/Api/Adapter/LikeAdapter.php:358
-msgid "A like must have an owner."
+#: src/Form/SettingsFieldset.php:33
+msgid "Digital objects"
 msgstr ""
 
-#: src/Api/Adapter/LikeAdapter.php:363
+#: src/Form/QuickSearchForm.php:43
+msgid "Resource by id"
+msgstr ""
+
+#: src/Form/QuickSearchForm.php:53
+msgid "User by id"
+msgstr ""
+
+#: src/Api/Adapter/LikeAdapter.php:364
+msgid "A like must have an owner or an anonymous identity."
+msgstr ""
+
+#: src/Api/Adapter/LikeAdapter.php:369
 msgid "A like must have a resource."
 msgstr ""
 
-#: src/Api/Adapter/LikeAdapter.php:378
+#: src/Api/Adapter/LikeAdapter.php:386
 msgid "This user already has a like/dislike on this resource."
 msgstr ""
 
@@ -231,50 +287,50 @@ msgstr ""
 msgid "Like count"
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:74
+#: src/Controller/Admin/IndexController.php:80
 msgid "Like successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:94
+#: src/Controller/Admin/IndexController.php:100
 msgid "You must select at least one like to batch delete."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:103
+#: src/Controller/Admin/IndexController.php:109
 msgid "Likes successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:123
+#: src/Controller/Admin/IndexController.php:129
 msgid "You must select at least one resource."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:139
+#: src/Controller/Admin/IndexController.php:145
 msgid "{count} likes have been reset."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:167
-#: src/Controller/Site/IndexController.php:45
+#: src/Controller/Admin/IndexController.php:173
+#: src/Controller/Site/IndexController.php:46
 msgid "Method not allowed."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:172
+#: src/Controller/Admin/IndexController.php:178
 msgid "You must be logged in."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:179
-#: src/Controller/Site/IndexController.php:60
-#: src/Controller/Site/IndexController.php:112
+#: src/Controller/Admin/IndexController.php:185
+#: src/Controller/Site/IndexController.php:62
+#: src/Controller/Site/IndexController.php:119
 msgid "Invalid resource."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:212 config/module.config.php:165
+#: src/Controller/Admin/IndexController.php:218 config/module.config.php:166
 msgid "An error occurred."
 msgstr ""
 
-#: src/Controller/Site/IndexController.php:52
+#: src/Controller/Site/IndexController.php:54
 msgid "You must be logged in to like or dislike resources."
 msgstr ""
 
-#: src/Controller/Site/IndexController.php:97 config/module.config.php:166
+#: src/Controller/Site/IndexController.php:104 config/module.config.php:167
 msgid "An error occurred while processing your request."
 msgstr ""
 
@@ -286,6 +342,6 @@ msgstr ""
 msgid "🖒: Button"
 msgstr ""
 
-#: config/module.config.php:163
+#: config/module.config.php:164
 msgid "You must be logged in to 🖒 resources."
 msgstr ""
