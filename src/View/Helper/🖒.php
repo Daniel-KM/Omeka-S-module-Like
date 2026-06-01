@@ -3,7 +3,7 @@
 namespace 🖒\View\Helper;
 
 use Laminas\View\Helper\AbstractHelper;
-use Omeka\Api\Representation\AbstractResourceEntityRepresentation;
+use Omeka\Api\Representation\AbstractEntityRepresentation;
 use Omeka\Api\Representation\UserRepresentation;
 use Omeka\Settings\Settings;
 use Omeka\Settings\SiteSettings;
@@ -54,7 +54,8 @@ class 🖒 extends AbstractHelper
     /**
      * Render like/dislike buttons.
      *
-     * @param AbstractResourceEntityRepresentation|null $resource
+     * @param \Omeka\Api\Representation\AbstractEntityRepresentation|null $resource
+     *     Any resource or any representation with id(), like Selection.
      * @param UserRepresentation|null $user
      * @param array $options Available options:
      *   - showCount🖒: bool (default from settings)
@@ -65,7 +66,7 @@ class 🖒 extends AbstractHelper
      * @return string
      */
     public function __invoke(
-        ?AbstractResourceEntityRepresentation $resource = null,
+        ?AbstractEntityRepresentation $resource = null,
         ?UserRepresentation $user = null,
         array $options = []
     ): string {
