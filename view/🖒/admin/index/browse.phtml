@@ -16,7 +16,8 @@ $hyperlink = $plugins->get('hyperlink');
 $escapeAttr = $plugins->get('escapeHtmlAttr');
 
 $this->headLink()
-    ->appendStylesheet($assetUrl('css/common-quick-search.css', 'Common'));
+    ->appendStylesheet($assetUrl('css/common-quick-search.css', 'Common'))
+    ->appendStylesheet($assetUrl('css/🖒-admin.css', '🖒'));
 $this->headScript()
     ->appendFile($assetUrl('js/common-quick-search.js', 'Common'), 'text/javascript', ['defer' => 'defer']);
 

@@ -7,7 +7,6 @@ header nav .like::before,
     content: "\f164"; /* fas fa-thumbs-up */
 }
 
-
 .likes.browse table .like-status {
     display: inline-flex;
     align-items: center;
