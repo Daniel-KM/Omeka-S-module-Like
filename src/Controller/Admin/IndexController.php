@@ -3,10 +3,12 @@
 namespace 🖒\Controller\Admin;
 
 use Common\Stdlib\PsrMessage;
+use Doctrine\ORM\EntityManager;
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 use Omeka\Settings\Settings;
 use 🖒\Api\Adapter\LikeAdapter;
+use 🖒\Entity\Like;
 use 🖒\Form\QuickSearchForm;
 
 class IndexController extends AbstractActionController
@@ -21,10 +23,19 @@ class IndexController extends AbstractActionController
      */
     protected $settings;
 
-    public function __construct(LikeAdapter $likeAdapter, Settings $settings)
-    {
+    /**
+     * @var \Doctrine\ORM\EntityManager
+     */
+    protected $entityManager;
+
+    public function __construct(
+        LikeAdapter $likeAdapter,
+        Settings $settings,
+        EntityManager $entityManager
+    ) {
         $this->likeAdapter = $likeAdapter;
         $this->settings = $settings;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -102,9 +113,13 @@ class IndexController extends AbstractActionController
             $form = $this->getForm(\Omeka\Form\ConfirmForm::class);
             $form->setData($this->getRequest()->getPost());
             if ($form->isValid()) {
-                $response = $this->api($form)->delete('likes', $this->params('id'));
-                if ($response) {
+                $like = $this->entityManager->find(Like::class, (int) $this->params('id'));
+                if ($like) {
+                    $this->entityManager->remove($like);
+                    $this->entityManager->flush();
                     $this->messenger()->addSuccess('Like successfully deleted.'); // @translate
+                } else {
+                    $this->messenger()->addError('Like not found.'); // @translate
                 }
             } else {
                 $this->messenger()->addFormErrors($form);

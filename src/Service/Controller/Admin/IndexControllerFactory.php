@@ -12,6 +12,7 @@ class IndexControllerFactory implements FactoryInterface
     {
         $likeAdapter = $services->get('Omeka\ApiAdapterManager')->get('likes');
         $settings = $services->get('Omeka\Settings');
-        return new IndexController($likeAdapter, $settings);
+        $entityManager = $services->get('Omeka\EntityManager');
+        return new IndexController($likeAdapter, $settings, $entityManager);
     }
 }
