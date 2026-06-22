@@ -49,7 +49,6 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
             // A vote belongs either to a user or to an anonymous visitor.
             $owner = $like->owner();
             $resource = $like->resource();
-            $deleteUrl = $url('admin/like-id', ['action' => 'delete', 'id' => $like->id()]);
             ?>
         <tr>
             <td>
@@ -77,9 +76,10 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
             </td>
             <td><?= $i18n->dateFormat($like->created(), 'medium', 'medium') ?></td>
             <td>
-                <?= $hyperlink('', $deleteUrl, [
-                    'class' => 'o-icon-delete',
+                <?= $hyperlink('', '#', [
+                    'class' => 'o-icon-delete sidebar-content',
                     'title' => $translate('Delete'),
+                    'data-sidebar-selector' => '#sidebar',
                     'data-sidebar-content-url' => $url('admin/like-id', ['action' => 'delete-confirm', 'id' => $like->id()]),
                 ]) ?>
             </td>
@@ -98,6 +98,14 @@ $this->htmlElement('body')->appendAttribute('class', 'like likes browse');
 
 <div class="browse-controls">
     <?= $p ?>
+</div>
+
+<div id="sidebar" class="sidebar">
+    <?= $hyperlink('', '#', [
+        'class' => 'sidebar-close o-icon-close',
+        'title' => $translate('Close'),
+    ]) ?>
+    <div class="sidebar-content"></div>
 </div>
 
 <?= $this->partial('common/quick-search-sidebar', [

@@ -1,0 +1,14 @@
+<?php
+/**
+ * @var \Laminas\View\Renderer\PhpRenderer $this
+ * @var \Laminas\Form\Form $form
+ * @var string $resourceLabel
+ */
+$translate = $this->plugin('translate');
+$label = $translate($resourceLabel);
+?>
+<div id="sidebar-confirm">
+    <h3><?= sprintf($translate('Delete %s'), $label) ?></h3>
+    <p><?= sprintf($translate('Are you sure you would like to delete this %s?'), $label) ?></p>
+    <?= $this->form($form) ?>
+</div>

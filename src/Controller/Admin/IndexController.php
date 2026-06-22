@@ -67,6 +67,33 @@ class IndexController extends AbstractActionController
     }
 
     /**
+     * Render the sidebar confirmation before deleting a like.
+     *
+     * Does not fetch the entity: the Doctrine ORM DQL lexer rejects the emoji
+     * namespace, so api()->read('likes', $id) throws. The sidebar only needs
+     * the form action URL, which can be built from the id.
+     */
+    public function deleteConfirmAction()
+    {
+        $id = (int) $this->params('id');
+
+        $form = $this->getForm(\Omeka\Form\ConfirmForm::class);
+        $form->setAttribute('action', $this->url()->fromRoute('admin/like-id', [
+            'action' => 'delete',
+            'id' => $id,
+        ]));
+        $form->setButtonLabel('Confirm delete'); // @translate
+
+        $view = new ViewModel([
+            'form' => $form,
+            'resourceLabel' => 'like', // @translate
+        ]);
+        $view->setTerminal(true);
+        $view->setTemplate('common/admin/🖒-delete-confirm');
+        return $view;
+    }
+
+    /**
      * Delete a like.
      */
     public function deleteAction()
