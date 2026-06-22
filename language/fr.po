@@ -1,15 +1,10 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-01 00:00+0000\n"
+"POT-Creation-Date: 2026-06-22 00:00+0000\n"
+"PO-Revision-Date: 2026-06-22 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: \n"
 "Language: fr\n"
@@ -51,12 +46,12 @@ msgstr "Je n’ai pas voté"
 msgid "Has likes"
 msgstr "A des Likes"
 
-#: Module.php:861 view/🖒/admin/index/browse.phtml:26
+#: Module.php:861 view/🖒/admin/index/browse.phtml:27
 #: view/common/admin/🖒-details.phtml:15
 msgid "Likes"
 msgstr "Likes"
 
-#: view/🖒/admin/index/browse.phtml:30
+#: view/🖒/admin/index/browse.phtml:31
 msgid "Quick filter"
 msgstr "Filtre rapide"
 
@@ -80,11 +75,11 @@ msgstr "Aimé"
 msgid "Disliked"
 msgstr "Pas aimé"
 
-#: view/🖒/admin/index/browse.phtml:93
+#: view/🖒/admin/index/browse.phtml:94
 msgid "No ❤️ found."
 msgstr "Pas de ❤️ trouvé."
 
-#: view/🖒/admin/index/browse.phtml:105
+#: view/🖒/admin/index/browse.phtml:114
 msgid "Filter likes"
 msgstr "Filtrer les J’aime"
 
@@ -294,42 +289,50 @@ msgstr "L’utilisateur a déjà un J’aime/Je n’aime pas sur cette ressource
 msgid "Like count"
 msgstr "Total de Like"
 
-#: src/Controller/Admin/IndexController.php:80
+#: src/Controller/Admin/IndexController.php:100
+msgid "like"
+msgstr "j’aime"
+
+#: src/Controller/Admin/IndexController.php:120
 msgid "Like successfully deleted."
 msgstr "Likes supprimé avec succès."
 
-#: src/Controller/Admin/IndexController.php:100
+#: src/Controller/Admin/IndexController.php:122
+msgid "Like not found."
+msgstr "Like non trouvé."
+
+#: src/Controller/Admin/IndexController.php:142
 msgid "You must select at least one like to batch delete."
 msgstr "Vous devez choisir au moins un Like pour la suppression en lot."
 
-#: src/Controller/Admin/IndexController.php:109
+#: src/Controller/Admin/IndexController.php:151
 msgid "Likes successfully deleted."
 msgstr "Likes supprimés avec succès."
 
-#: src/Controller/Admin/IndexController.php:129
+#: src/Controller/Admin/IndexController.php:171
 msgid "You must select at least one resource."
 msgstr "Vous devez choisir au moins une ressource."
 
-#: src/Controller/Admin/IndexController.php:145
+#: src/Controller/Admin/IndexController.php:187
 msgid "{count} likes have been reset."
 msgstr "{count} votes ont été réinitialisés."
 
-#: src/Controller/Admin/IndexController.php:173
+#: src/Controller/Admin/IndexController.php:215
 #: src/Controller/Site/IndexController.php:46
 msgid "Method not allowed."
 msgstr "Méthode non autorisée."
 
-#: src/Controller/Admin/IndexController.php:178
+#: src/Controller/Admin/IndexController.php:220
 msgid "You must be logged in."
 msgstr "Vous devez être connecté."
 
-#: src/Controller/Admin/IndexController.php:185
+#: src/Controller/Admin/IndexController.php:227
 #: src/Controller/Site/IndexController.php:62
 #: src/Controller/Site/IndexController.php:119
 msgid "Invalid resource."
 msgstr "Ressource invalide."
 
-#: src/Controller/Admin/IndexController.php:218 config/module.config.php:166
+#: src/Controller/Admin/IndexController.php:260 config/module.config.php:166
 msgid "An error occurred."
 msgstr "Une erreur est survenue."
 
@@ -353,38 +356,13 @@ msgstr "🖒 : Bouton"
 msgid "You must be logged in to 🖒 resources."
 msgstr "Vous devez être connecté pour 🖒 les ressources."
 
-#~ msgid ""
-#~ "Double votes are prevented per browser via a cookie. This is a best-"
-#~ "effort deduplication that can be bypassed by clearing cookies."
-#~ msgstr ""
-#~ "Les doubles votes sont évités via un cookie. C’est la meilleure solution "
-#~ "simple, mais elle peut être contournée en effaçant les cookies."
+#~ msgid "You must be logged in to filter by like status."
+#~ msgstr "Vous devez être connecté pour filtrer par 🖒 ou 🖓."
 
-#~| msgid "You must be logged in to filter by like status."
-#~ msgid "You must be logged in to ❤️ or 💔 resources."
-#~ msgstr "Vous devez être connecté pour ❤️ ou 💔 les ressources."
+#~ msgid "Most liked resources"
+#~ msgstr "Ressources les plus aimés"
 
-#~| msgid "You must be logged in to filter by like status."
-#~ msgid "You must be logged in to ❤️ resources."
-#~ msgstr "Vous devez être connecté pour ❤️ les ressources."
-
-#~ msgid "Show count of 🖓"
-#~ msgstr "Afficher le total de 🖓"
-
-#~ msgid "Heart"
-#~ msgstr "Cœur"
-
-#~ msgid "Thumb up/down"
-#~ msgstr "Pouce levé ou baissé"
-
-#~ msgid "Icon type"
-#~ msgstr "Type d’icône"
-
-#, php-format
-#~ msgid "%d total votes"
-#~ msgstr "%d votes au total"
-
-#~ msgid "Visualize the resources with the most 🖒 or 🖓."
+#~ msgid "Visualize the resources with the most likes or dislikes."
 #~ msgstr "Visualiser les ressources avec le plus de 🖒 ou 🖓."
 
 #~ msgid "Count type"
@@ -396,8 +374,29 @@ msgstr "Vous devez être connecté pour 🖒 les ressources."
 #~ msgid "Dislikes only"
 #~ msgstr "Seulement Je n’aime pas"
 
+#~ msgid "Total votes (likes + dislikes)"
+#~ msgstr "Total des votes (j’aime/j’aime pas)"
+
+#~ msgid "Score (likes - dislikes)"
+#~ msgstr "Score (🖒 - 🖓)"
+
+#~ msgid "The maximum number of resources to display."
+#~ msgstr "Le nombre maximum de ressources à afficher."
+
 #~ msgid "Order"
 #~ msgstr "Tri"
+
+#~ msgid "Most first (descending)"
+#~ msgstr "Le plus en premier (descendant)"
+
+#~ msgid "Least first (ascending)"
+#~ msgstr "Le moins en premier (ascendant)"
+
+#~ msgid "Likes over time"
+#~ msgstr "J’aime au fil du temps"
+
+#~ msgid "Visualize the count of likes over a selected period of time."
+#~ msgstr "Visualiser le compte des J’aime sur une période de temps définie."
 
 #~ msgid "Total votes"
 #~ msgstr "Total des votes"
@@ -411,6 +410,9 @@ msgstr "Vous devez être connecté pour 🖒 les ressources."
 #~ "Enter the end of the time series in ISO 8601 format: YYYY-MM-DDTHH:MM:SS"
 #~ msgstr ""
 #~ "Indiquer la fin de la série au format ISO 8601 : YYYY-MM-DDTHH:MM:SS"
+
+#~ msgid "Sample rate"
+#~ msgstr "Fréquence d’échantillonnage"
 
 #~ msgid "1 hour"
 #~ msgstr "1 heure"
@@ -430,11 +432,64 @@ msgstr "Vous devez être connecté pour 🖒 les ressources."
 #~ msgid "Cumulative"
 #~ msgstr "Cumulé"
 
+#~ msgid "Show cumulative count over time instead of count per period."
+#~ msgstr "Afficher le cumul au fil du temps au lieux du total par période."
+
+#~ msgid "Likes by user"
+#~ msgstr "J’aime par utilisateur"
+
+#~ msgid "Visualize which users have given the most likes or dislikes."
+#~ msgstr "Visualiser les utilisateurs ayant voté le plus (🖒 ou 🖓)."
+
+#~ msgid "Likes given"
+#~ msgstr "J’aime donnés"
+
 #~ msgid "Dislikes given"
 #~ msgstr "🖓 donnés"
+
+#~ msgid "Total votes given"
+#~ msgstr "Total des votes"
+
+#~ msgid "The maximum number of users to display."
+#~ msgstr "Le nombre maximum d’utilisateurs à afficher."
+
+#~ msgid "Selection type"
+#~ msgstr "Type de sélection"
 
 #~ msgid "Single selection"
 #~ msgstr "Sélection simple"
 
+#~ msgid "Multiple selection"
+#~ msgstr "Sélection multiple"
+
 #~ msgid "Show options"
 #~ msgstr "Voir les options"
+
+#~ msgid "Voted by me (liked or disliked)"
+#~ msgstr "Voté par moi-même (🖒 ou 🖓)"
+
+#~ msgid ""
+#~ "Double votes are prevented per browser via a cookie. This is a best-"
+#~ "effort deduplication that can be bypassed by clearing cookies."
+#~ msgstr ""
+#~ "Les doubles votes sont évités via un cookie. C’est la meilleure solution "
+#~ "simple, mais elle peut être contournée en effaçant les cookies."
+
+#~ msgid "You must be logged in to ❤️ or 💔 resources."
+#~ msgstr "Vous devez être connecté pour ❤️ ou 💔 les ressources."
+
+#~ msgid "You must be logged in to ❤️ resources."
+#~ msgstr "Vous devez être connecté pour ❤️ les ressources."
+
+#~ msgid "Show count of 🖓"
+#~ msgstr "Afficher le total de 🖓"
+
+#~ msgid "Heart"
+#~ msgstr "Cœur"
+
+#~ msgid "Thumb up/down"
+#~ msgstr "Pouce levé ou baissé"
+
+#, php-format
+#~ msgid "%d total votes"
+#~ msgstr "%d votes au total"

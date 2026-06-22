@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 00:00+0000\n"
+"POT-Creation-Date: 2026-06-22 00:00+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,12 +50,12 @@ msgstr ""
 msgid "Has likes"
 msgstr ""
 
-#: Module.php:861 view/🖒/admin/index/browse.phtml:26
+#: Module.php:861 view/🖒/admin/index/browse.phtml:27
 #: view/common/admin/🖒-details.phtml:15
 msgid "Likes"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:30
+#: view/🖒/admin/index/browse.phtml:31
 msgid "Quick filter"
 msgstr ""
 
@@ -79,11 +79,11 @@ msgstr ""
 msgid "Disliked"
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:93
+#: view/🖒/admin/index/browse.phtml:94
 msgid "No ❤️ found."
 msgstr ""
 
-#: view/🖒/admin/index/browse.phtml:105
+#: view/🖒/admin/index/browse.phtml:114
 msgid "Filter likes"
 msgstr ""
 
@@ -287,42 +287,50 @@ msgstr ""
 msgid "Like count"
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:80
+#: src/Controller/Admin/IndexController.php:100
+msgid "like"
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:120
 msgid "Like successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:100
+#: src/Controller/Admin/IndexController.php:122
+msgid "Like not found."
+msgstr ""
+
+#: src/Controller/Admin/IndexController.php:142
 msgid "You must select at least one like to batch delete."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:109
+#: src/Controller/Admin/IndexController.php:151
 msgid "Likes successfully deleted."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:129
+#: src/Controller/Admin/IndexController.php:171
 msgid "You must select at least one resource."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:145
+#: src/Controller/Admin/IndexController.php:187
 msgid "{count} likes have been reset."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:173
+#: src/Controller/Admin/IndexController.php:215
 #: src/Controller/Site/IndexController.php:46
 msgid "Method not allowed."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:178
+#: src/Controller/Admin/IndexController.php:220
 msgid "You must be logged in."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:185
+#: src/Controller/Admin/IndexController.php:227
 #: src/Controller/Site/IndexController.php:62
 #: src/Controller/Site/IndexController.php:119
 msgid "Invalid resource."
 msgstr ""
 
-#: src/Controller/Admin/IndexController.php:218 config/module.config.php:166
+#: src/Controller/Admin/IndexController.php:260 config/module.config.php:166
 msgid "An error occurred."
 msgstr ""
 

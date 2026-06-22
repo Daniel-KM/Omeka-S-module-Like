@@ -1,15 +1,10 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) 2026 THE PACKAGE'S COPYRIGHT HOLDER
-# This file is distributed under the same license as the PACKAGE package.
-# FIRST AUTHOR <EMAIL@ADDRESS>, 2026.
-#
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-06-01 00:00+0000\n"
-"PO-Revision-Date: 2026-06-01 00:00+0000\n"
+"POT-Creation-Date: 2026-06-22 00:00+0000\n"
+"PO-Revision-Date: 2026-06-22 00:00+0000\n"
 "Last-Translator: Daniel Berthereau <Daniel.fr@Berthereau.net>\n"
 "Language-Team: br <LL@li.org>\n"
 "Language: br\n"
@@ -58,12 +53,12 @@ msgstr "N'eo ket votet ganin"
 msgid "Has likes"
 msgstr "He deus plijadurioù"
 
-#: Module.php:861 view/🖒/admin/index/browse.phtml:26
+#: Module.php:861 view/🖒/admin/index/browse.phtml:27
 #: view/common/admin/🖒-details.phtml:15
 msgid "Likes"
 msgstr "Plijout a ra"
 
-#: view/🖒/admin/index/browse.phtml:30
+#: view/🖒/admin/index/browse.phtml:31
 msgid "Quick filter"
 msgstr "Sil buan"
 
@@ -87,11 +82,11 @@ msgstr "Plijet"
 msgid "Disliked"
 msgstr "N'eo ket plijet"
 
-#: view/🖒/admin/index/browse.phtml:93
+#: view/🖒/admin/index/browse.phtml:94
 msgid "No ❤️ found."
 msgstr "❤️ ebet kavet."
 
-#: view/🖒/admin/index/browse.phtml:105
+#: view/🖒/admin/index/browse.phtml:114
 msgid "Filter likes"
 msgstr "Silañ ar plijadennoù"
 
@@ -309,42 +304,50 @@ msgstr ""
 msgid "Like count"
 msgstr "Niver a blijadennoù"
 
-#: src/Controller/Admin/IndexController.php:80
+#: src/Controller/Admin/IndexController.php:100
+msgid "like"
+msgstr "plijout"
+
+#: src/Controller/Admin/IndexController.php:120
 msgid "Like successfully deleted."
 msgstr "Plijadenn lamet kuit gant berzh."
 
-#: src/Controller/Admin/IndexController.php:100
+#: src/Controller/Admin/IndexController.php:122
+msgid "Like not found."
+msgstr "Evel ma n'eo ket bet kavet."
+
+#: src/Controller/Admin/IndexController.php:142
 msgid "You must select at least one like to batch delete."
 msgstr "Ret eo deoc'h dibab da nebeutañ ur 'Me plij' evit diverkañ a-stroll."
 
-#: src/Controller/Admin/IndexController.php:109
+#: src/Controller/Admin/IndexController.php:151
 msgid "Likes successfully deleted."
 msgstr "Plijetoù diverket gant berzh."
 
-#: src/Controller/Admin/IndexController.php:129
+#: src/Controller/Admin/IndexController.php:171
 msgid "You must select at least one resource."
 msgstr "Ret eo deoc'h dibab da nebeutañ ur vammenn."
 
-#: src/Controller/Admin/IndexController.php:145
+#: src/Controller/Admin/IndexController.php:187
 msgid "{count} likes have been reset."
 msgstr "Adlañset eo bet an {count} a blij."
 
-#: src/Controller/Admin/IndexController.php:173
+#: src/Controller/Admin/IndexController.php:215
 #: src/Controller/Site/IndexController.php:46
 msgid "Method not allowed."
 msgstr "Hentenn n'eo ket aotreet."
 
-#: src/Controller/Admin/IndexController.php:178
+#: src/Controller/Admin/IndexController.php:220
 msgid "You must be logged in."
 msgstr "Ret eo deoc'h bezañ kevreet."
 
-#: src/Controller/Admin/IndexController.php:185
+#: src/Controller/Admin/IndexController.php:227
 #: src/Controller/Site/IndexController.php:62
 #: src/Controller/Site/IndexController.php:119
 msgid "Invalid resource."
 msgstr "Danvez direizh."
 
-#: src/Controller/Admin/IndexController.php:218 config/module.config.php:166
+#: src/Controller/Admin/IndexController.php:260 config/module.config.php:166
 msgid "An error occurred."
 msgstr "Ur fazi zo c'hoarvezet."
 
@@ -370,6 +373,122 @@ msgstr "🖒: Botoñs"
 #: config/module.config.php:164
 msgid "You must be logged in to 🖒 resources."
 msgstr "Ret eo deoc'h bezañ kevreet evit 🖒 danvezioù."
+
+#~ msgid "You must be logged in to filter by like status."
+#~ msgstr "Ret eo deoc'h bezañ kevreet evit silañ dre statud 'me gav mat'."
+
+#~ msgid "Most liked resources"
+#~ msgstr "Ar mammennoù muiañ karet"
+
+#~ msgid "Visualize the resources with the most likes or dislikes."
+#~ msgstr "Gweledelaat ar mammennoù gant ar muiañ a blij pe a blij ket."
+
+#~ msgid "Count type"
+#~ msgstr "Seurt kontañ"
+
+#~ msgid "Likes only"
+#~ msgstr "Neuze hepken"
+
+#~ msgid "Dislikes only"
+#~ msgstr "N'eo ket karet nemet"
+
+#~ msgid "Total votes (likes + dislikes)"
+#~ msgstr "Savoù-soñj en holl (karantezioù + ankarantezioù)"
+
+#~ msgid "Score (likes - dislikes)"
+#~ msgstr "Skoar (karantezioù - nann-karantezioù)"
+
+#~ msgid "The maximum number of resources to display."
+#~ msgstr "An niver brasañ a vammennoù da ziskouez."
+
+#~ msgid "Order"
+#~ msgstr "Gourc'hemenn"
+
+#~ msgid "Most first (descending)"
+#~ msgstr "An darn vrasañ da gentañ (diskenn)"
+
+#~ msgid "Least first (ascending)"
+#~ msgstr "Da gentañ an nebeutañ (o pignat)"
+
+#~ msgid "Likes over time"
+#~ msgstr "Plijadennoù a-hed an amzer"
+
+#~ msgid "Visualize the count of likes over a selected period of time."
+#~ msgstr "Gweledelaat niver ar 'm'plij' war ur prantad amzer dibabet."
+
+#~ msgid "Total votes"
+#~ msgstr "Savoù-soñj en holl"
+
+#~ msgid ""
+#~ "Enter the start of the time series in ISO 8601 format: YYYY-MM-DDTHH:MM:SS"
+#~ msgstr ""
+#~ "Roit penn-kentañ an heuliad amzer e furmad ISO 8601 : AAAA-MM-DDTHH:MM:SS"
+
+#~ msgid ""
+#~ "Enter the end of the time series in ISO 8601 format: YYYY-MM-DDTHH:MM:SS"
+#~ msgstr ""
+#~ "Roit dibenn an heuliad amzer e furmad ISO 8601 : AAAA-MM-DDTHH:MM:SS"
+
+#~ msgid "Sample rate"
+#~ msgstr "Tizh standilhonañ"
+
+#~ msgid "1 hour"
+#~ msgstr "1 eur"
+
+#~ msgid "1 day"
+#~ msgstr "1 deiz"
+
+#~ msgid "7 days"
+#~ msgstr "7 devezh"
+
+#~ msgid "1 month"
+#~ msgstr "1 miz"
+
+#~ msgid "1 year"
+#~ msgstr "1 bloaz"
+
+#~ msgid "Cumulative"
+#~ msgstr "Dastumet"
+
+#~ msgid "Show cumulative count over time instead of count per period."
+#~ msgstr ""
+#~ "Diskouez ar c'henniver hollek a-hed an amzer e-lec'h ar c'henniver dre "
+#~ "brantad."
+
+#~ msgid "Likes by user"
+#~ msgstr "Plijadennoù an implijer"
+
+#~ msgid "Visualize which users have given the most likes or dislikes."
+#~ msgstr ""
+#~ "Gweledelaat peseurt implijerien o deus roet ar muiañ a 'likes' pe a "
+#~ "'dislikes'."
+
+#~ msgid "Likes given"
+#~ msgstr "Roet ar mentoù"
+
+#~ msgid "Dislikes given"
+#~ msgstr "An draoù na blij ket"
+
+#~ msgid "Total votes given"
+#~ msgstr "Savoù-soñj roet en holl"
+
+#~ msgid "The maximum number of users to display."
+#~ msgstr "An niver brasañ a implijerien da ziskouez."
+
+#~ msgid "Selection type"
+#~ msgstr "Seurt dibab"
+
+#~ msgid "Single selection"
+#~ msgstr "Un dibab hepken"
+
+#~ msgid "Multiple selection"
+#~ msgstr "Diuzadenn lies"
+
+#~ msgid "Show options"
+#~ msgstr "Diskouez an dibarzhioù"
+
+#~ msgid "Voted by me (liked or disliked)"
+#~ msgstr "Ma vot (karet pe zikaret)"
 
 #~ msgid ""
 #~ "Double votes are prevented per browser via a cookie. This is a best-"
