@@ -260,7 +260,7 @@ msgstr "Titl pajenn ar mignoned a blij. Dre ziouer : \"Ma mignoned a blij\"."
 
 #: src/Form/SiteSettingsFieldset.php:203
 msgid "Item show"
-msgstr "Artikel anzeigen"
+msgstr ""
 
 #: src/Form/SiteSettingsFieldset.php:204
 msgid "Media show"
@@ -268,7 +268,7 @@ msgstr "Diskouez mediaoù"
 
 #: src/Form/SiteSettingsFieldset.php:205
 msgid "Item set show"
-msgstr "Artikel-Set anzeigen"
+msgstr ""
 
 #: src/Form/SettingsFieldset.php:28
 msgid "Resources to enable likes on"
@@ -276,7 +276,7 @@ msgstr "Danvezioù evit gweredekaat ar 'me plij' war"
 
 #: src/Form/SettingsFieldset.php:33
 msgid "Digital objects"
-msgstr "Digitale Objekte"
+msgstr ""
 
 #: src/Form/QuickSearchForm.php:43
 msgid "Resource by id"
