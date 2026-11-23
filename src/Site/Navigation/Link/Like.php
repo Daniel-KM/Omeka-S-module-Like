@@ -56,7 +56,15 @@ class Like implements LinkInterface
             ];
         }
 
-        // Without Guest module or for anonymous users, link to login.
+        // Without the module Guest, its routes do not exist.
+        if (!$isGuestActive) {
+            return [
+                'label' => $data['label'],
+                'route' => 'login',
+                'class' => 'like-link',
+            ];
+        }
+
         return [
             'label' => $data['label'],
             'route' => 'site/guest/anonymous',

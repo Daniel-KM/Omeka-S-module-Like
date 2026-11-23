@@ -18,9 +18,12 @@ class GuestController extends IndexController
     {
         $user = $this->identity();
         if (!$user) {
-            return $this->redirect()->toRoute('site/guest/anonymous', [
-                'site-slug' => $this->params('site-slug'),
-            ]);
+            // Without the module Guest, its routes do not exist.
+            return class_exists('Guest\\Module', false)
+                ? $this->redirect()->toRoute('site/guest/anonymous', [
+                    'site-slug' => $this->params('site-slug'),
+                ])
+                : $this->redirect()->toRoute('login');
         }
 
         $site = $this->currentSite();
