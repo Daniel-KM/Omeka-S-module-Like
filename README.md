@@ -44,8 +44,7 @@ Installation
 
 See general end user documentation for [installing a module].
 
-The module requires the modules [Common], version 3.4.74 or later, and [Guest],
-version 3.4.11 or later.
+The module requires the modules [Common] and [Guest].
 
 * From the zip
 
@@ -223,10 +222,11 @@ conditions as regards security.
 The fact that you are presently reading this means that you have had knowledge
 of the CeCILL license and that you accept its terms.
 
+
 Copyright
 ---------
 
-- Copyright Daniel Berthereau, 2025 (see [Daniel-KM] on GitLab)
+- Copyright Daniel Berthereau, 2025-2026 (see [Daniel-KM] on GitLab)
 
 This module was designed for [Musée de Bretagne].
 
