@@ -47,67 +47,69 @@
 }
 
 /* Icon styles */
-.like-button .like-icon {
-    font-size: 1.5em;
-    font-weight: bold;
-    line-height: 1;
-    transition: color 0.15s ease;
-}
+.like-button {
+    & .like-icon {
+        font-size: 1.5em;
+        font-weight: bold;
+        line-height: 1;
+        transition: color 0.15s ease;
+    }
 
-.like-button .fa {
-    font-size: 1em;
-    font-weight: bold;
-    line-height: 1;
-    transition: color 0.15s ease;
-}
+    & .fa {
+        font-size: 1em;
+        font-weight: bold;
+        line-height: 1;
+        transition: color 0.15s ease;
+    }
 
-/* Default icon colors */
-.like-button.like-action .like-icon,
-.like-button.like-action .fa,
-.like-button.dislike-action .like-icon,
-.like-button.dislike-action .fa {
-    color: #888;
-}
+    /* Default icon colors */
+    &.like-action .like-icon,
+    &.like-action .fa,
+    &.dislike-action .like-icon,
+    &.dislike-action .fa {
+        color: #888;
+    }
 
-/* Active state - colored icons */
-.like-button.like-action.active .like-icon,
-.like-button.like-action.active .fa {
-    color: #28a745;
-}
+    /* Active state - colored icons */
+    &.like-action.active .like-icon,
+    &.like-action.active .fa {
+        color: #28a745;
+    }
 
-.like-button.dislike-action.active .like-icon,
-.like-button.dislike-action.active .fa {
-    color: #dc3545;
-}
+    &.dislike-action.active .like-icon,
+    &.dislike-action.active .fa {
+        color: #dc3545;
+    }
 
-/* Hover colors */
-.like-button.like-action:hover .like-icon,
-.like-button.like-action:hover .fa {
-    color: #28a745;
-}
+    /* Hover colors */
+    &.like-action:hover .like-icon,
+    &.like-action:hover .fa {
+        color: #28a745;
+    }
 
-.like-button.dislike-action:hover .like-icon,
-.like-button.dislike-action:hover .fa {
-    color: #dc3545;
-}
+    &.dislike-action:hover .like-icon,
+    &.dislike-action:hover .fa {
+        color: #dc3545;
+    }
 
-/* Count styles */
-.like-button .like-count,
-.like-button .dislike-count {
-    font-weight: 600;
-    font-size: 1rem;
-    line-height: 1;
-    min-width: 1em;
-    text-align: center;
-    color: #555;
-}
+    /* Count styles */
+    & .like-count,
+    & .dislike-count {
+        font-weight: 600;
+        font-size: 1rem;
+        line-height: 1;
+        min-width: 1em;
+        text-align: center;
+        color: #555;
+    }
 
-.like-button.like-action.active .like-count {
-    color: #28a745;
-}
+    &.like-action.active .like-count {
+        color: #28a745;
+    }
 
-.like-button.dislike-action.active .dislike-count {
-    color: #dc3545;
+    &.dislike-action.active .dislike-count {
+        color: #dc3545;
+    }
 }
 
 /* Loading state */
@@ -130,20 +132,18 @@
 .resource-like-status {
     padding: 0.5rem 0;
     border-bottom: 1px solid #eee;
-}
-
-.resource-like-status .like-stats {
-    display: flex;
-    gap: 1rem;
-    margin-top: 0.5rem;
-    font-size: 0.9rem;
-    color: #666;
-}
-
-.resource-like-status .like-stats .stat {
-    display: flex;
-    align-items: center;
-    gap: 0.25rem;
+    & .like-stats {
+        display: flex;
+        gap: 1rem;
+        margin-top: 0.5rem;
+        font-size: 0.9rem;
+        color: #666;
+        & .stat {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+    }
 }
 
 /* Dark mode support */
@@ -152,15 +152,17 @@
         background: rgba(255, 255, 255, 0.1);
     }
 
-    .like-button .like-count,
-    .like-button .dislike-count {
-        color: #aaa;
-    }
+    .like-button {
+        & .like-count,
+        & .dislike-count {
+            color: #aaa;
+        }
 
-    .like-button.like-action .like-icon,
-    .like-button.like-action .fa,
-    .like-button.dislike-action .like-icon,
-    .like-button.dislike-action .fa {
-        color: #999;
+        &.like-action .like-icon,
+        &.like-action .fa,
+        &.dislike-action .like-icon,
+        &.dislike-action .fa {
+            color: #999;
+        }
     }
 }

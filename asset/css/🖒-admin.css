@@ -7,47 +7,50 @@ header nav .like::before,
     content: "\f164"; /* fas fa-thumbs-up */
 }
 
-.likes.browse table .like-status {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.25rem 0.5rem;
-    border-radius: 3px;
-    font-size: 0.85rem;
-}
+.likes.browse {
+    & table {
+        & .like-status {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 3px;
+            font-size: 0.85rem;
+            &.liked {
+                background: #d4edda;
+                color: #155724;
+            }
 
-.likes.browse table .like-status.liked {
-    background: #d4edda;
-    color: #155724;
-}
-
-.likes.browse table .like-status.disliked {
-    background: #f8d7da;
-    color: #721c24;
+            &.disliked {
+                background: #f8d7da;
+                color: #721c24;
+            }
+        }
+    }
 }
 
 /* Meta group in sidebar */
-.meta-group .like-stats {
-    display: flex;
-    gap: 1rem;
-    flex-wrap: wrap;
-}
+.meta-group {
+    & .like-stats {
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        & .stat {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            &.likes {
+                color: #28a745;
+            }
 
-.meta-group .like-stats .stat {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-}
+            &.dislikes {
+                color: #dc3545;
+            }
 
-.meta-group .like-stats .stat.likes {
-    color: #28a745;
-}
-
-.meta-group .like-stats .stat.dislikes {
-    color: #dc3545;
-}
-
-.meta-group .like-stats .stat.total {
-    color: #6c757d;
-    font-size: 0.9em;
+            &.total {
+                color: #6c757d;
+                font-size: 0.9em;
+            }
+        }
+    }
 }
